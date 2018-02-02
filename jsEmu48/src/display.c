@@ -167,6 +167,8 @@ void display_show()
 	int ow = 0; // 1
 	int oh = 0; // 1
 	
+	//printf("display_show();\n");
+	
 	clearLCD();
 
 	for(int y=0 ; y<64 ; y++)

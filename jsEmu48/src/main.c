@@ -61,31 +61,39 @@ SDL_Texture *texTarget = NULL;
 TTF_Font * ArialFonte = NULL;
 #endif
 
-//SDL_TimerID my_timer0_id;
-//SDL_TimerID my_timer1_id;
-//SDL_TimerID my_timer2_id;
-//SDL_TimerID my_timer3_id;
-//SDL_TimerID my_timer4_id;
+SDL_TimerID my_timer0_id;
+SDL_TimerID my_timer1_id;
+SDL_TimerID my_timer2_id;
+SDL_TimerID my_timer3_id;
+SDL_TimerID my_timer4_id;
 
 boolean SDL_ready = FALSE;
 
 
+
+unsigned int framecount = 0;
+unsigned int emuframecount = 0;
+
 unsigned int currentTime;
+unsigned int currentTime_emu;
+unsigned int lastTime_timer_fps = 0;
+unsigned int lastTime_timer_emu = 0;
+
 
 unsigned int lastTime_timer1 = 0;
-unsigned int delay_timer1 = 200; //20; // 1000 / X = 20
+unsigned int delay_timer1 = 20; // 1000 / X = 20
 
 unsigned int lastTime_timer2 = 0;
 unsigned int delay_timer2 = 1000;
 
 unsigned int lastTime_timer3 = 0;
-unsigned int delay_timer3 = 1000;//62; // 1000 / X = 16
+unsigned int delay_timer3 = 62; // 1000 / X = 16
 
 unsigned int lastTime_timer4 = 0;
-unsigned int delay_timer4 = 50; // 1000 / X = 8192
+unsigned int delay_timer4 = 500;// 50; // 1000 / X = 8192
 
 unsigned int lastTime_timer5 = 0;
-unsigned int delay_timer5 = 100; //50;
+unsigned int delay_timer5 = 100; // 100; //50;
 
 
 
@@ -109,12 +117,15 @@ Uint32 my_callbackfunc0(Uint32 interval, void *param)
 
 Uint32 my_callbackfunc1(Uint32 interval, void *param)
 {
+	printf("my_callbackfunc1\n");
+	//return interval;
+	
 	SDL_Event event;
 	SDL_UserEvent userevent;
 	
 	userevent.type = SDL_USEREVENT;
 	userevent.code = 1;
-	userevent.data1 = &display_update;
+	userevent.data1 = NULL;//&display_update;
 	userevent.data2 = NULL;//param;
 	
 	event.type = SDL_USEREVENT;
@@ -165,7 +176,7 @@ Uint32 my_callbackfunc4(Uint32 interval, void *param)
 	
 	userevent.type = SDL_USEREVENT;
 	userevent.code = 4;
-	userevent.data1 = &timer2_update;
+	userevent.data1 = &display_show; //  timer2_update;
 	userevent.data2 = NULL;//param;
 	
 	event.type = SDL_USEREVENT;
@@ -205,7 +216,7 @@ static void parse_args(int argc, char *argv[])
 
 static void program_init(void)
 {
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
+	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_TIMER ) < 0 )
 	{
 		printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
 		return;
@@ -250,13 +261,8 @@ static void program_init(void)
 	
 	printf("init done\n");
 	
-	/*
-	 //my_timer0_id = SDL_AddTimer(100, my_callbackfunc0, NULL); // gui_update
-	 my_timer1_id = SDL_AddTimer(1, my_callbackfunc1, NULL); // display
-	 my_timer2_id = SDL_AddTimer(1000, my_callbackfunc2, NULL); // cpu real speed
-	 my_timer3_id = SDL_AddTimer(10, my_callbackfunc3, NULL); // timer1
-	 my_timer4_id = SDL_AddTimer(10, my_callbackfunc4, NULL); // timer2
-	 */
+	
+	
 	
 //    int depth;
 //
@@ -306,6 +312,16 @@ static void program_init(void)
 //    show_mouse(screen);
 }
 
+void start_timers()
+{
+	printf("start_timers\n");
+	//my_timer0_id = SDL_AddTimer(100, my_callbackfunc0, NULL); // gui_update
+	my_timer1_id = SDL_AddTimer(50, my_callbackfunc1, NULL); // display
+//	my_timer2_id = SDL_AddTimer(1000, my_callbackfunc2, NULL); // cpu real speed
+//	my_timer3_id = SDL_AddTimer(62, my_callbackfunc3, NULL); // timer1
+//	my_timer4_id = SDL_AddTimer(500, my_callbackfunc4, NULL); // timer2
+}
+
 static void program_exit(void)
 {
 	/*
@@ -328,6 +344,7 @@ boolean refreshSDL()
 {
 	SDL_Event event;
 	//SDL_WaitEvent(&event);
+	//while(SDL_PollEvent(&event))
 	if(SDL_PollEvent(&event))
 	{
 		switch(event.type)
@@ -358,10 +375,11 @@ boolean refreshSDL()
 				
 			case SDL_USEREVENT:
 			{
+				printf("SDL_USEREVENT\n");
 				//if(event.user.code == 1)
 				
-				void (*p) (void*) = event.user.data1;
-				p(event.user.data2);
+				//void (*p) (void*) = event.user.data1;
+				//p(event.user.data2);
 			}
 			break;
 				
@@ -385,11 +403,44 @@ void mainloop()
 	}
 	if(SDL_ready == TRUE)
 	{
+
 		currentTime = SDL_GetTicks();
-		//printf("mainloop() currentTime = %d\n", currentTime);
+		
+#ifdef EMSCRIPTEN
+		
+		currentTime_emu = currentTime;
+		emuframecount = 0;
+		
+		do {
+			emuframecount ++;
+			emulator_run();
+			
+			currentTime_emu = SDL_GetTicks() - currentTime;
+		}
+		while (currentTime_emu < 10);
+		
+		//printf("EMU emuframecount = %d | time = %d\n", emuframecount, currentTime_emu);
+		
+#else
 		
 		emulator_run();
 		
+#endif
+		
+		/*
+		framecount++;
+		
+		if (currentTime >= lastTime_timer_fps + 1000) {
+			//printf("Report(2) %dmsec: %d\n", delay_timer2, currentTime - lastTime_timer2);
+			lastTime_timer_fps = currentTime;
+			printf("FPS = %d\n", framecount);
+			framecount = 0;
+		}
+		*/
+		
+		//printf("mainloop() currentTime = %d\n", currentTime);
+		
+#if 1
 		// true_speed_proc
 		if (currentTime > lastTime_timer2 + delay_timer2) {
 			//printf("Report(2) %dmsec: %d\n", delay_timer2, currentTime - lastTime_timer2);
@@ -423,17 +474,18 @@ void mainloop()
 			lastTime_timer5 = currentTime;
 			display_show();
 		}
+#endif
 		
-		
+	
 		if(refreshSDL() == FALSE)
 		{
 	#ifdef EMSCRIPTEN
+			printf("emscripten_cancel_main_loop\n");
 			emscripten_cancel_main_loop();
 	#endif
 			return;
 		}
 	}
-
 }
 
 int main (int argc, char *argv[])
@@ -443,15 +495,30 @@ int main (int argc, char *argv[])
 	program_init();
 	emulator_init();
 	//gui_init();
-
+	
+	//start_timers();
+	
 #ifdef EMSCRIPTEN
 	printf("emscripten_set_main_loop\n");
 	emscripten_set_main_loop(mainloop, 0, 1);
+	
+	//emscripten_set_main_loop_timing(EM_TIMING_SETTIMEOUT, 0);
+	
+	//while(please_exit == FALSE) mainloop();
 #else
 	printf("NO emscripten_set_main_loop\n");
 	while(please_exit == FALSE) mainloop();
 #endif
-
+	
+	/*
+#ifdef EMSCRIPTEN
+	printf("emscripten_set_main_loop\n");
+	emscripten_set_main_loop(mainloop, 1000, 1);
+#else
+	printf("NO emscripten_set_main_loop\n");
+	while(please_exit == FALSE) mainloop();
+#endif
+*/
     gui_exit();
     emulator_exit();
     program_exit();
