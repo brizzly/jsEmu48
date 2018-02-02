@@ -1,0 +1,347 @@
+/*
+ *     /
+ *    /__  ___  ___  ____
+ *   /  / /  / /__/ / / / /  /
+ *  /  / /__/ /__  /   / /__/
+ *      /
+ *     /    version 0.9.0
+ *
+ * Copyright 2002 Daniel Nilsson
+ *
+ * This file is part of hpemu.
+ *
+ * Hpemu is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * Hpemu is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with hpemu; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+//#include <allegro.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include "color.h"
+#include "pmenu.h"
+#include "pcalc.h"
+#include "pdebug.h"
+#include "pfiles.h"
+#include "pabout.h"
+#include "gui.h"
+
+#include <SDL.h>
+#ifdef SDL_TTF
+#include <SDL_ttf.h>
+#endif
+
+extern SDL_Renderer * renderer;
+#ifdef SDL_TTF
+extern TTF_Font * ArialFonte;
+#endif
+
+SDL_Surface * surfA[49];
+SDL_Texture * textA[49];
+
+
+
+#define PANEL_FLAG_VISIBLE	0x01
+
+typedef struct GuiPanel {
+    int x, y;
+    int w, h;
+    int flags;
+    //BITMAP *bmp;
+    //void (*show)(BITMAP *bmp);
+    void (*hide)(void);
+    void (*mouse_down)(int mx, int my, int mb);
+    void (*mouse_up)(int mx, int my, int mb);
+} GuiPanel;
+
+static GuiPanel panels[PANEL_COUNT] = {
+	/*
+    { 10,   10,	    620,    20,	    0,	NULL,	pmenu_show,	pmenu_hide,	pmenu_down,	pmenu_up },
+    { 360,  40,	    270,    430,    0,	NULL,	pcalc_show,	pcalc_hide,	pcalc_down,	pcalc_up },
+    { 10,   40,	    340,    430,    0,	NULL,	pdebug_show,	pdebug_hide,	pdebug_down,	pdebug_up },
+    { 10,   40,	    340,    430,    0,	NULL,	pfiles_show,	pfiles_hide,	pfiles_down,	pfiles_up },
+    { 10,   40,	    340,    430,    0,	NULL,	pabout_show,	pabout_hide,	pabout_down,	pabout_up },
+	 */
+};
+
+void drawText(int index, int x, int y, int btn_w, int btn_h)
+{
+	SDL_Surface * letterSurface = surfA[index];
+	SDL_Texture * letterTexture = textA[index];
+	if(letterSurface == NULL || letterTexture == NULL) {
+		return;
+	}
+	int texW = letterSurface->w;
+	int texH = letterSurface->h;
+	SDL_Rect destRect = {x + (btn_w-texW)/2, y, texW, texH};
+	SDL_RenderCopy(renderer, letterTexture, NULL, &destRect);
+}
+
+void gui_initKeyboard(Button * calcbuttons)
+{
+	printf("init texts\n");
+	
+	if(ArialFonte == NULL) {
+		printf("init texts error Font NULL\n");
+		return;
+	}
+	
+	SDL_Color couleurBlanche = {255, 255, 255};
+	
+#ifdef SDL_TTF
+	int i=0;
+	Button *buttons = calcbuttons;
+	while(buttons->text)
+	{
+		SDL_Surface * s = NULL;
+		SDL_Texture * t = NULL;
+		
+		
+		if(buttons->text && strcmp(buttons->text, "") != 0) {
+			//printf("init text %s\n", buttons->text);
+
+			s = TTF_RenderText_Blended (ArialFonte, buttons->text, couleurBlanche);
+			
+			if(s) {
+				//printf("init text2 %s\n", buttons->text);
+			
+				t = SDL_CreateTextureFromSurface( renderer, s );
+			}
+		}
+		else {
+			printf("init text NULL\n");
+		}
+		
+		surfA[i] = s;
+		textA[i] = t;
+
+		i++;
+		buttons++;
+	}
+#endif
+}
+
+void gui_init(void)
+{	
+    //clear_to_color(screen, color[C_BACKGROUND]);
+    //gui_show_panel(PANEL_MENU);
+    //gui_show_panel(PANEL_CALC);
+    //gui_show_panel(PANEL_ABOUT);
+}
+
+void gui_exit(void)
+{
+	int i;
+	
+	for (i = 0; i < PANEL_COUNT; i++) {
+		gui_hide_panel(i);
+	}
+}
+
+static __inline int panel_at(int x, int y)
+{
+    int i;
+
+    for (i = PANEL_COUNT; i >= 0; i--) {
+	if (panels[i].flags & PANEL_FLAG_VISIBLE &&
+	    x >= panels[i].x && x < panels[i].x+panels[i].w &&
+	    y >= panels[i].y && y < panels[i].y+panels[i].h) {
+	    break;
+	}
+    }
+    return i;
+}
+
+void gui_update(void)
+{
+	/*
+    static int down_panel = -1;
+    static int down_mb = 0;
+    int mx, my, mb;
+
+    mx = mouse_x;
+    my = mouse_y;
+    mb = mouse_b;
+
+    if (!down_mb && (mb & 1)) {
+	down_panel = panel_at(mx, my);
+	if (down_panel >= 0) {
+	    down_mb = 1;
+	    panels[down_panel].mouse_down(mx - panels[down_panel].x, my - panels[down_panel].y, down_mb);
+	}
+    } else if (!down_mb && (mb & 2)) {
+	down_panel = panel_at(mx, my);
+	if (down_panel >= 0) {
+	    down_mb = 2;
+	    panels[down_panel].mouse_down(mx - panels[down_panel].x, my - panels[down_panel].y, down_mb);
+	}
+    } else if (down_mb && !(mb & 3)) {
+	panels[down_panel].mouse_up(mx - panels[down_panel].x, my - panels[down_panel].y, down_mb);
+	down_mb = 0;
+	down_panel = -1;
+    }
+	 */
+}
+
+void gui_show_panel(int i)
+{
+	/*
+    if (!(panels[i].flags & PANEL_FLAG_VISIBLE)) {
+	panels[i].flags |= PANEL_FLAG_VISIBLE;
+	panels[i].bmp = create_sub_bitmap(screen, panels[i].x, panels[i].y, panels[i].w, panels[i].h);
+	acquire_screen();
+	scare_mouse();
+	rect(screen, panels[i].x-1, panels[i].y-1, panels[i].x+panels[i].w, panels[i].y+panels[i].h, color[C_PANEL_BORDER]);
+	panels[i].show(panels[i].bmp);
+	unscare_mouse();
+	release_screen();
+    }*/
+}
+
+void gui_hide_panel(int i)
+{
+	/*
+    if (panels[i].flags & PANEL_FLAG_VISIBLE) {
+	panels[i].flags &= ~PANEL_FLAG_VISIBLE;
+	panels[i].hide();
+	destroy_bitmap(panels[i].bmp);
+	panels[i].bmp = NULL;
+    }*/
+}
+
+
+void button_draw(/*BITMAP *bmp,*/ Button *b)
+{
+	SDL_Rect rectToDraw = {/*60+*/b->x, /*20+*/b->y, b->w, b->h};
+	
+	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x33);
+	SDL_RenderFillRect(renderer, &rectToDraw);
+
+	
+	drawText(b->index, /*60+*/b->x, /*20+*/b->y, b->w, b->h);
+
+
+	int c;
+	
+//	c = color[(b->flags&BUTTON_PUSHED) ? C_BUTTON_PUSHED : C_BUTTON_BACK];
+
+	if(b->flags&BUTTON_PUSHED) {
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+	}
+	else {
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	}
+	SDL_RenderDrawRect(renderer, &rectToDraw);
+
+	
+	
+	/*
+    int c;
+   
+    c = color[(b->flags&BUTTON_PUSHED) ? C_BUTTON_PUSHED : C_BUTTON_BACK];
+    text_mode(c);
+    acquire_bitmap(bmp);
+    scare_mouse();
+    rect(bmp, b->x-1, b->y-1, b->x+b->w, b->y+b->h, color[C_BUTTON_BORDER]);
+    rectfill(bmp, b->x, b->y, b->x+b->w-1, b->y+b->h-1, c);
+    c = color[(b->flags&BUTTON_DISABLED) ? C_BUTTON_DISABLED : C_BUTTON_TEXT];
+    textout_centre(bmp, font, b->text, b->x+b->w/2, b->y+(b->h-text_height (font))/2, c);
+    unscare_mouse();
+    release_bitmap(bmp);
+	 */
+}
+
+void button_draw_all(/*BITMAP *bmp,*/ Button *buttons)
+{
+    //acquire_bitmap(bmp);
+    //scare_mouse();
+    while (buttons->text) {
+		button_draw(/*bmp,*/ buttons);
+		buttons++;
+    }
+    //unscare_mouse();
+    //release_bitmap(bmp);
+}
+
+
+static __inline Button *find_button(Button *b, int x, int y)
+{
+    while (b->text) {
+	if (x >= b->x && x < b->x+b->w && y >= b->y && y < b->y+b->h) {
+	    return b;
+	}
+	b++;
+    }
+    return NULL;
+}
+
+
+int button_mouse_down(/*BITMAP *bmp,*/ Button *buttons, int mx, int my, int mb)
+{
+    Button *b = find_button(buttons, mx, my);
+    if (!b) {
+		return 0;
+    }
+	printf("Press %s\n", b->text);
+	
+    if (!(b->flags & BUTTON_DISABLED))
+	{
+		if ((mb == 2 && (b->flags & BUTTON_B2TOGGLE)) ||
+			(mb == 1 && (b->flags & BUTTON_B1TOGGLE))) {
+			
+			if (b->flags & BUTTON_PUSHED) {
+				b->flags &= ~BUTTON_PUSHED;
+			//button_draw(bmp, b);
+				if (b->up) b->up(TRUE);
+			}
+			else {
+				b->flags |= BUTTON_PUSHED;
+				//button_draw(bmp, b);
+				if (b->down) b->down();
+			}
+		} else if (mb == 1 && !(b->flags & BUTTON_PUSHED)) {
+			b->flags |= BUTTON_PUSHED;
+			//button_draw(bmp, b);
+			if (b->down) b->down();
+		}
+    }
+    return 1;
+}
+
+int button_mouse_up(/*BITMAP *bmp,*/ Button *buttons, int mx, int my, int mb)
+{
+    Button *b = find_button(buttons, mx, my);
+    int ret = (b != NULL);
+	if(b) {
+		printf("Release %s\n", b->text);
+	}
+
+    if (b && !(b->flags & BUTTON_DISABLED)) {
+	if (mb == 1 && (b->flags & BUTTON_PUSHED) && !(b->flags & BUTTON_B1TOGGLE)) {
+	    b->flags &= ~BUTTON_PUSHED;
+	    //button_draw(bmp, b);
+	    if (b->up) b->up(TRUE);
+	}
+    }
+    if (mb == 1) {
+	for (b = buttons; b->text; b++) {
+	    if ((b->flags & (BUTTON_B1RELEASE|BUTTON_PUSHED)) == (BUTTON_B1RELEASE|BUTTON_PUSHED)) {
+		b->flags &= ~BUTTON_PUSHED;
+		//button_draw(bmp, b);
+		if (b->up) b->up(FALSE);
+		ret = 1;
+	    }
+	}
+    }
+    return ret;
+}

@@ -1,0 +1,12 @@
+
+Faire un ecran LCD simple pixel en OpenGL
+
+Afficher l'écran
+
+Traiter le clavier
+
+
+
+
+
+
