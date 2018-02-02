@@ -7,6 +7,7 @@ Demo : http://jadegame.com/jsemu48/hp48.html
 
 
 
+
 Emscripten 
 
 emcc -O3 *.c -s USE_SDL=2 -s USE_SDL_TTF=2 -s ASSERTIONS=2 -Werror --preload-file hpemu.rom --preload-file FreeSans.ttf -s SAFE_HEAP=1 -o hp48.html
@@ -14,8 +15,8 @@ emcc -O3 *.c -s USE_SDL=2 -s USE_SDL_TTF=2 -s ASSERTIONS=2 -Werror --preload-fil
 
 
 HP EMU 0.9
-
 https://sourceforge.net/projects/hpemu/files/hpemu/
+
 
 
 
