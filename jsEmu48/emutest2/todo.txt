@@ -1,10 +1,5 @@
 
-Faire un ecran LCD simple pixel en OpenGL
-
-Afficher l'écran
-
-Traiter le clavier
-
+Needs speeding things up under Emscripten version !
 
 
 

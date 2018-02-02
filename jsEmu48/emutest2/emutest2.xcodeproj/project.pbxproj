@@ -37,7 +37,6 @@
 		F9E4914F201BEA8100355128 /* timers.c in Sources */ = {isa = PBXBuildFile; fileRef = F9E49138201BEA8100355128 /* timers.c */; };
 		F9E49151201BF5B200355128 /* hpemu.rom in Resources */ = {isa = PBXBuildFile; fileRef = F9E49150201BF5B200355128 /* hpemu.rom */; };
 		F9E49154201BF6DA00355128 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9E49153201BF6DA00355128 /* CoreFoundation.framework */; };
-		F9E49156201C07EF00355128 /* todo.txt in Resources */ = {isa = PBXBuildFile; fileRef = F9E49155201C07EF00355128 /* todo.txt */; };
 		F9E4919F201D091500355128 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9E4919E201D091400355128 /* SDL2.framework */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +44,7 @@
 		F938601220238CBE00CE7020 /* zeldahp.dir */ = {isa = PBXFileReference; lastKnownFileType = file; name = zeldahp.dir; path = ../zeldahp.dir; sourceTree = "<group>"; };
 		F93860142023C1BA00CE7020 /* SDL2_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_ttf.framework; path = ../../../../../../../../Library/Frameworks/SDL2_ttf.framework; sourceTree = "<group>"; };
 		F9386016202470E400CE7020 /* FreeSans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FreeSans.ttf; path = ../src/FreeSans.ttf; sourceTree = "<group>"; };
+		F93C5A36202484C300F7BCDD /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = readme.txt; path = ../readme.txt; sourceTree = "<group>"; };
 		F9E490FB201BEA5C00355128 /* emutest2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = emutest2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9E490FE201BEA5C00355128 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F9E490FF201BEA5C00355128 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -120,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				F9E49155201C07EF00355128 /* todo.txt */,
+				F93C5A36202484C300F7BCDD /* readme.txt */,
 				F9386016202470E400CE7020 /* FreeSans.ttf */,
 				F9E49150201BF5B200355128 /* hpemu.rom */,
 				F938601220238CBE00CE7020 /* zeldahp.dir */,
@@ -273,7 +274,6 @@
 			files = (
 				F938601320238D1400CE7020 /* zeldahp.dir in Resources */,
 				F9386017202470E400CE7020 /* FreeSans.ttf in Resources */,
-				F9E49156201C07EF00355128 /* todo.txt in Resources */,
 				F9E49102201BEA5C00355128 /* Assets.xcassets in Resources */,
 				F9E49151201BF5B200355128 /* hpemu.rom in Resources */,
 				F9E49105201BEA5C00355128 /* MainMenu.xib in Resources */,
