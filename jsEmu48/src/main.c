@@ -410,14 +410,14 @@ void mainloop()
 			lastTime_timer3 = currentTime;
 			timer1_update();
 		}
-		
+/*
 		// timer2
 		if (currentTime > lastTime_timer4 + delay_timer4) {
 			//printf("Report(4) %dmsec: %d\n", delay_timer4, currentTime - lastTime_timer4);
 			lastTime_timer4 = currentTime;
 			timer2_update();
 		}
-		
+*/
 		// display show
 		if (currentTime > lastTime_timer5 + delay_timer5) {
 			lastTime_timer5 = currentTime;
