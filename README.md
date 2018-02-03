@@ -1,7 +1,7 @@
 # jsEmu48
 SDL Emscripten compatible Fork version of HPEMU by Daniel Nilsson
 
-Demo : http://jadegame.com/jsemu48/hp48.html
+Demo : http://jadegame.com/jsemu48/
 
 
 
