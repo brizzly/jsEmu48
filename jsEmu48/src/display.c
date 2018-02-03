@@ -25,15 +25,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//#include <allegro.h>
 #include <SDL.h>
+#include <SDL_image.h>
 #include <stdlib.h> 
 #include "types.h"
 #include "bus.h"
 #include "pcalc.h"
 
-#define LCD_X	4 // 60 // 364
-#define LCD_Y	20 // 30
+#define LCD_X	37 // 60 // 364
+#define LCD_Y	86 // 20 // 30
 
 address menu_base;
 address display_base;
@@ -50,18 +50,20 @@ static boolean in_menu;
 static byte off_cur_line;
 static byte off_line;
 static int off_cnt;
-//static BITMAP *lcd;
 static boolean shouldClear = TRUE;
 static boolean shouldRender = FALSE;
 
 extern SDL_Renderer * renderer;
 extern SDL_Window * window;
 extern SDL_Texture * texTarget;
+extern SDL_Texture * faceplateTexture;
 
 
 void clearLCD()
 {
-	SDL_SetRenderDrawColor(renderer, 0x44, 0x44, 0x66, 0xFF);
+//	SDL_SetRenderDrawColor(renderer, 0x44, 0x44, 0x66, 0xFF);
+//	SDL_SetRenderDrawColor(renderer, 119, 172, 130, 0xFF); // vert clair
+	SDL_SetRenderDrawColor(renderer, 48, 68, 90, 0xFF); // bleu foncé
 	SDL_RenderClear(renderer);
 	SDL_SetRenderTarget(renderer, texTarget);
 }
@@ -74,9 +76,14 @@ void endLCD()
 	//Show rendered to texture
 	//gTargetTexture.render( 0, 0, NULL, angle, &screenCenter );
 	SDL_Rect r1 = {0,0,131,64};
-	SDL_Rect r2 = {LCD_X,LCD_Y,262,128};
+//	SDL_Rect r2 = {LCD_X,LCD_Y,262,128};
+	SDL_Rect r2 = {LCD_X,LCD_Y,524,256};
 	SDL_RenderCopyEx(renderer, texTarget, &r1, &r2, 0, NULL, SDL_FLIP_NONE);
 	
+	if(faceplateTexture) {
+		SDL_RenderCopy(renderer, faceplateTexture, NULL, NULL);
+	}
+
 	pcalc_show();
 }
 
@@ -179,11 +186,13 @@ void display_show()
 			byte pixel = lcdScreen[x+y*131];
 			if(pixel != '\0')
 			{
-				SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x66, 0xFF);
+				//SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x66, 0xFF);
+				SDL_SetRenderDrawColor(renderer, 37, 61, 84, 0xFF); // pixel bleu
 			}
 			else
 			{
-				SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xFF);
+				//SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xFF);
+				SDL_SetRenderDrawColor(renderer, 119, 172, 130, 0xFF); // vert clair
 			}
 			SDL_RenderFillRect(renderer, &rectToDraw);
 		}

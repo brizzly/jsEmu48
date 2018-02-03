@@ -1,7 +1,0 @@
-
-Needs speeding things up under Emscripten version !
-
-
-
-
-

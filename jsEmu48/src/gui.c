@@ -25,7 +25,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//#include <allegro.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "color.h"
@@ -37,11 +36,13 @@
 #include "gui.h"
 
 #include <SDL.h>
+#include <SDL_image.h>
 #ifdef SDL_TTF
 #include <SDL_ttf.h>
 #endif
 
 extern SDL_Renderer * renderer;
+extern SDL_Texture * faceplateTexture;
 #ifdef SDL_TTF
 extern TTF_Font * ArialFonte;
 #endif
@@ -222,13 +223,16 @@ void gui_hide_panel(int i)
 
 void button_draw(/*BITMAP *bmp,*/ Button *b)
 {
-	SDL_Rect rectToDraw = {/*60+*/b->x, /*20+*/b->y, b->w, b->h};
-	
+//	SDL_Rect rectToDraw = {/*60+*/b->x, /*20+*/b->y, b->w, b->h};
+	SDL_Rect rectToDraw = {b->x*2, b->y*2, b->w*2, b->h*2};
+
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x33);
-	SDL_RenderFillRect(renderer, &rectToDraw);
+//	SDL_RenderFillRect(renderer, &rectToDraw);
+	//SDL_RenderDrawRect(renderer, &rectToDraw);
 
 	
-	drawText(b->index, /*60+*/b->x, /*20+*/b->y, b->w, b->h);
+//	drawText(b->index, /*60+*/b->x, /*20+*/b->y, b->w, b->h);
+	//drawText(b->index, b->x*2, 10 + b->y*2, b->w*2, b->h*2);
 
 
 	int c;
@@ -237,11 +241,12 @@ void button_draw(/*BITMAP *bmp,*/ Button *b)
 
 	if(b->flags&BUTTON_PUSHED) {
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+		SDL_RenderDrawRect(renderer, &rectToDraw);
 	}
 	else {
-		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+//		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	}
-	SDL_RenderDrawRect(renderer, &rectToDraw);
+	//SDL_RenderDrawRect(renderer, &rectToDraw);
 
 	
 	
@@ -277,7 +282,8 @@ void button_draw_all(/*BITMAP *bmp,*/ Button *buttons)
 static __inline Button *find_button(Button *b, int x, int y)
 {
     while (b->text) {
-	if (x >= b->x && x < b->x+b->w && y >= b->y && y < b->y+b->h) {
+	//if (x >= b->x && x < b->x+b->w && y >= b->y && y < b->y+b->h) {
+	if (x >= b->x*2 && x < b->x*2 + b->w*2 && y >= b->y*2 && y < b->y*2 + b->h*2) {
 	    return b;
 	}
 	b++;
@@ -286,7 +292,7 @@ static __inline Button *find_button(Button *b, int x, int y)
 }
 
 
-int button_mouse_down(/*BITMAP *bmp,*/ Button *buttons, int mx, int my, int mb)
+int button_mouse_down(Button *buttons, int mx, int my, int mb)
 {
     Button *b = find_button(buttons, mx, my);
     if (!b) {

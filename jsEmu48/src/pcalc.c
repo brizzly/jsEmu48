@@ -140,57 +140,60 @@ static void up84(boolean action)	{ kbd_key_released (8, 4); }
 static void dnON(void)			{ kbd_on_pressed  (); }
 static void upON(boolean action)	{ kbd_on_released (); }
 
+const int pox = 15;
+const int poy = 20;
+
 static Button calc_buttons[] = {
-    { 0, 	5,    160,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE,	"",	dn14,	up14 },
-    { 1,	49,   160,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "",	dn84,	up84 },
-    { 2,	93,   160,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "",	dn83,	up83 },
-    { 3,	137,  160,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "",	dn82,	up82 },
-    { 4,	181,  160,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "",	dn81,	up81 },
-    { 5,	225,  160,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "",	dn80,	up80 },
-    { 6,	5,    184,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "MTH",	dn24,	up24 },
-    { 7,	49,   184,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "PRG",	dn74,	up74 },
-    { 8,	93,   184,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "CST",	dn73,	up73 },
-    { 9,	137,  184,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "VAR",	dn72,	up72 },
-    { 10,	181,  184,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "^",	dn71,	up71 },
-    { 11,	225,  184,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "NXT",	dn70,	up70 },
-    { 12,	5,    208,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "'",	dn04,	up04 },
-    { 13,	49,   208,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "STO",	dn64,	up64 },
-    { 14, 	93,   208,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "EVAL",	dn63,	up63 },
-    { 15,	137,  208,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "<",	dn62,	up62 },
-    { 16,	181,  208,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "v",	dn61,	up61 },
-    { 17,	225,  208,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, ">",	dn60,	up60 },
-    { 18,	5,    232,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "SIN",	dn34,	up34 },
-    { 19,	49,   232,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "COS",	dn54,	up54 },
-    { 20,	93,   232,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "TAN",	dn53,	up53 },
-    { 21,	137,  232,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "/x",	dn52,	up52 },
-    { 22,	181,  232,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "yx",	dn51,	up51 },
-    { 23,	225,  232,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "1/x",	dn50,	up50 },
-    { 24,	5,    256,    84,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "ENTER",dn44,	up44 },
-    { 25,	93,   256,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "+/-",	dn43,	up43 },
-    { 26,	137,  256,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "EEX",	dn42,	up42 },
-    { 27,	181,  256,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "DEL",	dn41,	up41 },
-    { 28,	225,  256,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "<-",	dn40,	up40 },
-    { 29,	5,    280,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "a",	dn35,	up35 },
-    { 30,	49,   280,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "7",	dn33,	up33 },
-    { 31,	104,  280,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "8",	dn32,	up32 },
-    { 32,	159,  280,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "9",	dn31,	up31 },
-    { 33,	214,  280,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "/",	dn30,	up30 },
-    { 34,	5,    304,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "<-",	dn25,	up25 },
-    { 35,	49,   304,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "4",	dn23,	up23 },
-    { 36,	104,  304,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "5",	dn22,	up22 },
-    { 37,	159,  304,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "6",	dn21,	up21 },
-    { 38,	214,  304,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "X",	dn20,	up20 },
-    { 39,	5,    328,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "->",	dn15,	up15 },
-    { 40,	49,   328,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "1",	dn13,	up13 },
-    { 41,	104,  328,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "2",	dn12,	up12 },
-    { 42,	159,  328,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "3",	dn11,	up11 },
-    { 43,	214,  328,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "-",	dn10,	up10 },
-    { 44,	5,    352,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "ON",	dnON,	upON },
-    { 45,	49,   352,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "0",	dn03,	up03 },
-    { 46,	104,  352,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, ".",	dn02,	up02 },
-    { 47, 	159,  352,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "SPC",	dn01,	up01 },
-    { 48,	214,  352,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "+",	dn00,	up00 },
-    { 49,	0,    0,	    0,	0,  0,					NULL,	NULL,	NULL }
+    { 0, 	5+pox,    160+poy,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE,	"",	dn14,	up14 },
+    { 1,	49+pox,   160+poy,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "",	dn84,	up84 },
+    { 2,	93+pox,   160+poy,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "",	dn83,	up83 },
+    { 3,	137+pox,  160+poy,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "",	dn82,	up82 },
+    { 4,	181+pox,  160+poy,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "",	dn81,	up81 },
+    { 5,	225+pox,  160+poy,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "",	dn80,	up80 },
+    { 6,	5+pox,    184+poy+10,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "MTH",	dn24,	up24 },
+    { 7,	49+pox,   184+poy+10,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "PRG",	dn74,	up74 },
+    { 8,	93+pox,   184+poy+10,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "CST",	dn73,	up73 },
+    { 9,	137+pox,  184+poy+10,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "VAR",	dn72,	up72 },
+    { 10,	181+pox,  184+poy+10,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "^",	dn71,	up71 },
+    { 11,	225+pox,  184+poy+10,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "NXT",	dn70,	up70 },
+    { 12,	5+pox,    208+poy+12,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "'",	dn04,	up04 },
+    { 13,	49+pox,   208+poy+12,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "STO",	dn64,	up64 },
+    { 14, 	93+pox,   208+poy+12,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "EVAL",	dn63,	up63 },
+    { 15,	137+pox,  208+poy+12,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "<",	dn62,	up62 },
+    { 16,	181+pox,  208+poy+12,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "v",	dn61,	up61 },
+    { 17,	225+pox,  208+poy+12,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, ">",	dn60,	up60 },
+    { 18,	5+pox,    232+poy+14,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "SIN",	dn34,	up34 },
+    { 19,	49+pox,   232+poy+14,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "COS",	dn54,	up54 },
+    { 20,	93+pox,   232+poy+14,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "TAN",	dn53,	up53 },
+    { 21,	137+pox,  232+poy+14,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "/x",	dn52,	up52 },
+    { 22,	181+pox,  232+poy+14,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "yx",	dn51,	up51 },
+    { 23,	225+pox,  232+poy+14,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "1/x",	dn50,	up50 },
+    { 24,	5+pox,    256+poy+16,    84,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "ENTER",dn44,	up44 },
+    { 25,	93+pox,   256+poy+16,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "+/-",	dn43,	up43 },
+    { 26,	137+pox,  256+poy+16,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "EEX",	dn42,	up42 },
+    { 27,	181+pox,  256+poy+16,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "DEL",	dn41,	up41 },
+    { 28,	225+pox,  256+poy+16,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "<-",	dn40,	up40 },
+    { 29,	5+pox,    280+poy+20,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "a",	dn35,	up35 },
+    { 30,	49+pox,   280+poy+20,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "7",	dn33,	up33 },
+    { 31,	104+pox,  280+poy+20,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "8",	dn32,	up32 },
+    { 32,	159+pox,  280+poy+20,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "9",	dn31,	up31 },
+    { 33,	214+pox,  280+poy+20,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "/",	dn30,	up30 },
+    { 34,	5+pox,    304+poy+24,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "<-",	dn25,	up25 },
+    { 35,	49+pox,   304+poy+24,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "4",	dn23,	up23 },
+    { 36,	104+pox,  304+poy+24,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "5",	dn22,	up22 },
+    { 37,	159+pox,  304+poy+24,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "6",	dn21,	up21 },
+    { 38,	214+pox,  304+poy+24,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "X",	dn20,	up20 },
+    { 39,	5+pox,    328+poy+28,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "->",	dn15,	up15 },
+    { 40,	49+pox,   328+poy+28,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "1",	dn13,	up13 },
+    { 41,	104+pox,  328+poy+28,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "2",	dn12,	up12 },
+    { 42,	159+pox,  328+poy+28,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "3",	dn11,	up11 },
+    { 43,	214+pox,  328+poy+28,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "-",	dn10,	up10 },
+    { 44,	5+pox,    352+poy+30,    40,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "ON",	dnON,	upON },
+    { 45,	49+pox,   352+poy+30,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "0",	dn03,	up03 },
+    { 46,	104+pox,  352+poy+30,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, ".",	dn02,	up02 },
+    { 47, 	159+pox,  352+poy+30,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "SPC",	dn01,	up01 },
+    { 48,	214+pox,  352+poy+30,    51,	20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "+",	dn00,	up00 },
+    { 49,	0+pox,    0+poy,	    0,	0,  0,					NULL,	NULL,	NULL }
 };
 
 
@@ -215,10 +218,10 @@ void pcalc_hide(void)
 
 void pcalc_down(int mx, int my, int mb)
 {
-    button_mouse_down(/*calc_bmp,*/ calc_buttons, mx, my, mb);
+    button_mouse_down(calc_buttons, mx, my, mb);
 }
 
 void pcalc_up(int mx, int my, int mb)
 {
-    button_mouse_up(/*calc_bmp,*/ calc_buttons, mx, my, mb);
+    button_mouse_up(calc_buttons, mx, my, mb);
 }

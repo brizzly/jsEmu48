@@ -25,7 +25,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-//#include <allegro.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "types.h"
@@ -41,6 +40,7 @@
 #include "pfiles.h"
 
 #include <SDL.h>
+#include <SDL_image.h>
 #ifdef SDL_TTF
 #include <SDL_ttf.h>
 #endif
@@ -49,13 +49,14 @@
 #include <emscripten.h>
 #endif
 
-const int SCREEN_WIDTH = 270;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 602; // 540; // 270;
+const int SCREEN_HEIGHT = 873; //800; // 480;
 
 
 SDL_Window* window = NULL;
 SDL_Renderer * renderer = NULL;
 SDL_Texture *texTarget = NULL;
+SDL_Texture *faceplateTexture = NULL;
 
 #ifdef SDL_TTF
 TTF_Font * ArialFonte = NULL;
@@ -81,7 +82,7 @@ unsigned int lastTime_timer_emu = 0;
 
 
 unsigned int lastTime_timer1 = 0;
-unsigned int delay_timer1 = 20; // 1000 / X = 20
+unsigned int delay_timer1 = 10; // 1000 / X = 20
 
 unsigned int lastTime_timer2 = 0;
 unsigned int delay_timer2 = 1000;
@@ -90,7 +91,7 @@ unsigned int lastTime_timer3 = 0;
 unsigned int delay_timer3 = 62; // 1000 / X = 16
 
 unsigned int lastTime_timer4 = 0;
-unsigned int delay_timer4 = 500;// 50; // 1000 / X = 8192
+unsigned int delay_timer4 = 200;// 50; // 1000 / X = 8192
 
 unsigned int lastTime_timer5 = 0;
 unsigned int delay_timer5 = 100; // 100; //50;
@@ -117,9 +118,6 @@ Uint32 my_callbackfunc0(Uint32 interval, void *param)
 
 Uint32 my_callbackfunc1(Uint32 interval, void *param)
 {
-	printf("my_callbackfunc1\n");
-	//return interval;
-	
 	SDL_Event event;
 	SDL_UserEvent userevent;
 	
@@ -188,8 +186,6 @@ Uint32 my_callbackfunc4(Uint32 interval, void *param)
 
 
 
-
-
 static int fullscreen = FALSE;
 
 static void parse_args(int argc, char *argv[])
@@ -209,14 +205,10 @@ static void parse_args(int argc, char *argv[])
     }
 }
 
-//static void close_hook(void)
-//{
-//    please_exit = TRUE;
-//}
 
 static void program_init(void)
 {
-	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_TIMER ) < 0 )
+	if( SDL_Init( SDL_INIT_VIDEO | IMG_INIT_PNG | SDL_INIT_TIMER ) < 0 )
 	{
 		printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
 		return;
@@ -231,6 +223,7 @@ static void program_init(void)
 	
 	ArialFonte = TTF_OpenFont("FreeSans.ttf", 14);
 #endif
+	
 	
 	window = SDL_CreateWindow( "jsEmu48", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 	if( window == NULL )
@@ -249,6 +242,14 @@ static void program_init(void)
 	texTarget = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 131, 64);
 	
 	
+	SDL_Surface * faceplate = IMG_Load("48face2.png");
+	if(faceplate) {
+		//printf("init text2 %s\n", buttons->text);
+		
+		faceplateTexture = SDL_CreateTextureFromSurface( renderer, faceplate );
+	}
+	
+	
 	SDL_SetRenderTarget(renderer, texTarget);
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(renderer);
@@ -261,62 +262,16 @@ static void program_init(void)
 	
 	printf("init done\n");
 	
-	
-	
-	
-//    int depth;
-//
-//    if (install_allegro(SYSTEM_AUTODETECT, &errno, atexit) < 0) {
-//	allegro_message("Can't install allegro");
-//	exit(1);
-//    }
-//    if (install_timer() < 0) {
-//	allegro_message("Can't install timer driver");
-//	exit(1);
-//    }
-//    if (install_keyboard() < 0) {
-//	allegro_message("Can't install keyboard driver");
-//	exit(1);
-//    }
-//    if (install_mouse() < 0) {
-//	allegro_message("Can't install mouse driver");
-//	exit(1);
-//    }
-//
-//    if (fullscreen) {
-//	depth = 8;
-//    } else {
-//	depth = desktop_color_depth();
-//	if (depth == 0) {
-//	    depth = 8;
-//	}
-//    }
-//    set_color_depth(depth);
-//
-//    if (set_gfx_mode(fullscreen
-//		     ? GFX_AUTODETECT_FULLSCREEN
-//		     : GFX_AUTODETECT_WINDOWED,
-//		     640, 480, 0, 0) < 0) {
-//	allegro_message("Can't set graphics mode (%s)", allegro_error);
-//	exit(1);
-//    }
-//
-//    set_window_title("hpemu 0.9.0");
-//    set_window_close_hook(close_hook);
-//
-	
     color_init();
 	
 	SDL_ready = TRUE;
-
-//    show_mouse(screen);
 }
 
 void start_timers()
 {
 	printf("start_timers\n");
 	//my_timer0_id = SDL_AddTimer(100, my_callbackfunc0, NULL); // gui_update
-	my_timer1_id = SDL_AddTimer(50, my_callbackfunc1, NULL); // display
+//	my_timer1_id = SDL_AddTimer(50, my_callbackfunc1, NULL); // display
 //	my_timer2_id = SDL_AddTimer(1000, my_callbackfunc2, NULL); // cpu real speed
 //	my_timer3_id = SDL_AddTimer(62, my_callbackfunc3, NULL); // timer1
 //	my_timer4_id = SDL_AddTimer(500, my_callbackfunc4, NULL); // timer2
@@ -344,8 +299,8 @@ boolean refreshSDL()
 {
 	SDL_Event event;
 	//SDL_WaitEvent(&event);
-	//while(SDL_PollEvent(&event))
-	if(SDL_PollEvent(&event))
+	while(SDL_PollEvent(&event))
+	//if(SDL_PollEvent(&event))
 	{
 		switch(event.type)
 		{
@@ -417,7 +372,7 @@ void mainloop()
 			
 			currentTime_emu = SDL_GetTicks() - currentTime;
 		}
-		while (currentTime_emu < 10);
+		while (currentTime_emu < 2);
 		
 		//printf("EMU emuframecount = %d | time = %d\n", emuframecount, currentTime_emu);
 		

@@ -10,6 +10,8 @@
 		F938601320238D1400CE7020 /* zeldahp.dir in Resources */ = {isa = PBXBuildFile; fileRef = F938601220238CBE00CE7020 /* zeldahp.dir */; };
 		F93860152023C1BB00CE7020 /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93860142023C1BA00CE7020 /* SDL2_ttf.framework */; };
 		F9386017202470E400CE7020 /* FreeSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F9386016202470E400CE7020 /* FreeSans.ttf */; };
+		F945D52820253D5400909E91 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F945D52620253CDB00909E91 /* SDL2_image.framework */; };
+		F9976BA42025386A00230D83 /* 48face2.png in Resources */ = {isa = PBXBuildFile; fileRef = F9976BA32025386A00230D83 /* 48face2.png */; };
 		F9E49100201BEA5C00355128 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E490FF201BEA5C00355128 /* AppDelegate.m */; };
 		F9E49102201BEA5C00355128 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F9E49101201BEA5C00355128 /* Assets.xcassets */; };
 		F9E49105201BEA5C00355128 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9E49103201BEA5C00355128 /* MainMenu.xib */; };
@@ -45,6 +47,8 @@
 		F93860142023C1BA00CE7020 /* SDL2_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_ttf.framework; path = ../../../../../../../../Library/Frameworks/SDL2_ttf.framework; sourceTree = "<group>"; };
 		F9386016202470E400CE7020 /* FreeSans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FreeSans.ttf; path = ../src/FreeSans.ttf; sourceTree = "<group>"; };
 		F93C5A36202484C300F7BCDD /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = readme.txt; path = ../readme.txt; sourceTree = "<group>"; };
+		F945D52620253CDB00909E91 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
+		F9976BA32025386A00230D83 /* 48face2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 48face2.png; path = emutest2/48face2.png; sourceTree = "<group>"; };
 		F9E490FB201BEA5C00355128 /* emutest2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = emutest2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9E490FE201BEA5C00355128 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F9E490FF201BEA5C00355128 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -98,7 +102,6 @@
 		F9E4913A201BEA8100355128 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		F9E49150201BF5B200355128 /* hpemu.rom */ = {isa = PBXFileReference; lastKnownFileType = file; name = hpemu.rom; path = ../hpemu.rom; sourceTree = "<group>"; };
 		F9E49153201BF6DA00355128 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		F9E49155201C07EF00355128 /* todo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = todo.txt; sourceTree = "<group>"; };
 		F9E4919E201D091400355128 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -108,6 +111,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9E49154201BF6DA00355128 /* CoreFoundation.framework in Frameworks */,
+				F945D52820253D5400909E91 /* SDL2_image.framework in Frameworks */,
 				F93860152023C1BB00CE7020 /* SDL2_ttf.framework in Frameworks */,
 				F9E4919F201D091500355128 /* SDL2.framework in Frameworks */,
 			);
@@ -119,11 +123,11 @@
 		F9E490F2201BEA5C00355128 = {
 			isa = PBXGroup;
 			children = (
-				F9E49155201C07EF00355128 /* todo.txt */,
 				F93C5A36202484C300F7BCDD /* readme.txt */,
 				F9386016202470E400CE7020 /* FreeSans.ttf */,
 				F9E49150201BF5B200355128 /* hpemu.rom */,
 				F938601220238CBE00CE7020 /* zeldahp.dir */,
+				F9976BA32025386A00230D83 /* 48face2.png */,
 				F9E490FD201BEA5C00355128 /* emutest2 */,
 				F9E490FC201BEA5C00355128 /* Products */,
 				F9E49152201BF6D900355128 /* Frameworks */,
@@ -207,6 +211,7 @@
 		F9E49152201BF6D900355128 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F945D52620253CDB00909E91 /* SDL2_image.framework */,
 				F93860142023C1BA00CE7020 /* SDL2_ttf.framework */,
 				F9E4919E201D091400355128 /* SDL2.framework */,
 				F9E49153201BF6DA00355128 /* CoreFoundation.framework */,
@@ -273,6 +278,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F938601320238D1400CE7020 /* zeldahp.dir in Resources */,
+				F9976BA42025386A00230D83 /* 48face2.png in Resources */,
 				F9386017202470E400CE7020 /* FreeSans.ttf in Resources */,
 				F9E49102201BEA5C00355128 /* Assets.xcassets in Resources */,
 				F9E49151201BF5B200355128 /* hpemu.rom in Resources */,
@@ -435,6 +441,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = emutest2/emutest2.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 6CZ5X85785;
@@ -445,11 +452,14 @@
 				HEADER_SEARCH_PATHS = (
 					/Library/Frameworks/SDL2.framework/Headers/,
 					/Library/Frameworks/SDL2_ttf.framework/Headers/,
+					/Library/Frameworks/SDL2_image.framework/Headers/,
 				);
 				INFOPLIST_FILE = emutest2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jadegame.emu48test2.emutest2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -458,6 +468,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = emutest2/emutest2.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 6CZ5X85785;
@@ -468,11 +479,13 @@
 				HEADER_SEARCH_PATHS = (
 					/Library/Frameworks/SDL2.framework/Headers/,
 					/Library/Frameworks/SDL2_ttf.framework/Headers/,
+					/Library/Frameworks/SDL2_image.framework/Headers/,
 				);
 				INFOPLIST_FILE = emutest2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jadegame.emu48test2.emutest2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};
