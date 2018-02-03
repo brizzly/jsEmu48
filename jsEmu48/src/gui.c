@@ -221,7 +221,7 @@ void gui_hide_panel(int i)
 }
 
 
-void button_draw(/*BITMAP *bmp,*/ Button *b)
+void button_draw(Button *b)
 {
 //	SDL_Rect rectToDraw = {/*60+*/b->x, /*20+*/b->y, b->w, b->h};
 	SDL_Rect rectToDraw = {b->x*2, b->y*2, b->w*2, b->h*2};
@@ -230,10 +230,10 @@ void button_draw(/*BITMAP *bmp,*/ Button *b)
 //	SDL_RenderFillRect(renderer, &rectToDraw);
 	//SDL_RenderDrawRect(renderer, &rectToDraw);
 
-	
-//	drawText(b->index, /*60+*/b->x, /*20+*/b->y, b->w, b->h);
-	//drawText(b->index, b->x*2, 10 + b->y*2, b->w*2, b->h*2);
 
+	if(b->index >= 49) {
+		drawText(b->index, b->x*2, 10 + b->y*2, b->w*2, b->h*2);
+	}
 
 	int c;
 	
@@ -245,8 +245,8 @@ void button_draw(/*BITMAP *bmp,*/ Button *b)
 	}
 	else {
 //		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+//		SDL_RenderDrawRect(renderer, &rectToDraw);
 	}
-	//SDL_RenderDrawRect(renderer, &rectToDraw);
 
 	
 	
@@ -266,16 +266,12 @@ void button_draw(/*BITMAP *bmp,*/ Button *b)
 	 */
 }
 
-void button_draw_all(/*BITMAP *bmp,*/ Button *buttons)
+void button_draw_all(Button *buttons)
 {
-    //acquire_bitmap(bmp);
-    //scare_mouse();
     while (buttons->text) {
-		button_draw(/*bmp,*/ buttons);
+		button_draw(buttons);
 		buttons++;
     }
-    //unscare_mouse();
-    //release_bitmap(bmp);
 }
 
 

@@ -49,8 +49,8 @@
 #include <emscripten.h>
 #endif
 
-const int SCREEN_WIDTH = 602; // 540; // 270;
-const int SCREEN_HEIGHT = 873; //800; // 480;
+const int SCREEN_WIDTH = 540;
+const int SCREEN_HEIGHT = 1100;
 
 
 SDL_Window* window = NULL;
@@ -242,7 +242,7 @@ static void program_init(void)
 	texTarget = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 131, 64);
 	
 	
-	SDL_Surface * faceplate = IMG_Load("48face2.png");
+	SDL_Surface * faceplate = IMG_Load("48face4.png");
 	if(faceplate) {
 		//printf("init text2 %s\n", buttons->text);
 		
@@ -314,17 +314,9 @@ boolean refreshSDL()
 				
 			case SDL_MOUSEBUTTONDOWN:
 			{
-//				static int dk = 0;
-				
 				//printf("mouse down %d %d\n", event.button.x, event.button.y);
 				
 				pcalc_down(event.button.x, event.button.y, 1);
-				
-//				dk ++;
-//
-//				if(dk == 5) {
-//					//load_up(TRUE);
-//				}
 			}
 			break;
 				

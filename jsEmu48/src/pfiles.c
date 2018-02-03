@@ -144,7 +144,8 @@ static int file_size(char *name)
 */
 
 
-static void load_file(char *name)
+//static
+void load_file(char *name)
 {
     //PACKFILE *f;
 	FILE *f;
@@ -210,8 +211,6 @@ static void load_file(char *name)
 void load_up(boolean action)
 {
     static char path[PATH_SIZE] = "";
-	
-	load_file("zeldahp.dir");
 
     if (action) {
 //		if (file_select_ex("Load Object", path, NULL, PATH_SIZE, 0, 0)) {

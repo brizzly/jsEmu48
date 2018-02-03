@@ -32,8 +32,8 @@
 #include "bus.h"
 #include "pcalc.h"
 
-#define LCD_X	37 // 60 // 364
-#define LCD_Y	86 // 20 // 30
+#define LCD_X	76
+#define LCD_Y	150
 
 address menu_base;
 address display_base;
@@ -65,6 +65,12 @@ void clearLCD()
 //	SDL_SetRenderDrawColor(renderer, 119, 172, 130, 0xFF); // vert clair
 	SDL_SetRenderDrawColor(renderer, 48, 68, 90, 0xFF); // bleu foncé
 	SDL_RenderClear(renderer);
+	
+	if(faceplateTexture) {
+		SDL_Rect r3 = {0,0,534,1100};
+		SDL_RenderCopy(renderer, faceplateTexture, NULL, &r3);
+	}
+
 	SDL_SetRenderTarget(renderer, texTarget);
 }
 
@@ -77,12 +83,11 @@ void endLCD()
 	//gTargetTexture.render( 0, 0, NULL, angle, &screenCenter );
 	SDL_Rect r1 = {0,0,131,64};
 //	SDL_Rect r2 = {LCD_X,LCD_Y,262,128};
-	SDL_Rect r2 = {LCD_X,LCD_Y,524,256};
+//	SDL_Rect r2 = {LCD_X,LCD_Y,524,256};
+//	SDL_Rect r2 = {LCD_X,LCD_Y,436,214};
+	SDL_Rect r2 = {LCD_X,LCD_Y,393,192};
 	SDL_RenderCopyEx(renderer, texTarget, &r1, &r2, 0, NULL, SDL_FLIP_NONE);
 	
-	if(faceplateTexture) {
-		SDL_RenderCopy(renderer, faceplateTexture, NULL, NULL);
-	}
 
 	pcalc_show();
 }
@@ -111,8 +116,6 @@ static void fade_lcd_line(int y)
 static address draw_lcd_line(address adr, int y)
 {
 //	printf("draw_lcd_line %d ", y);
-//	return (adr + 0x22 + (!in_menu && (display_offset&4)?2:0)) & 0xFFFFF;
-	
 
     int x = 0;
     int bit = 0;
@@ -188,13 +191,15 @@ void display_show()
 			{
 				//SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x66, 0xFF);
 				SDL_SetRenderDrawColor(renderer, 37, 61, 84, 0xFF); // pixel bleu
+				SDL_RenderFillRect(renderer, &rectToDraw);
 			}
 			else
 			{
 				//SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xFF);
-				SDL_SetRenderDrawColor(renderer, 119, 172, 130, 0xFF); // vert clair
+//				SDL_SetRenderDrawColor(renderer, 119, 172, 130, 0xFF); // vert clair
+				SDL_SetRenderDrawColor(renderer, 119, 153, 136, 0xFF); // vert clair
+				SDL_RenderFillRect(renderer, &rectToDraw);
 			}
-			SDL_RenderFillRect(renderer, &rectToDraw);
 		}
 	}
 	

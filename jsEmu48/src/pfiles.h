@@ -28,11 +28,8 @@
 #ifndef __PFILES_H
 #define __PFILES_H
 
-//#include <allegro.h>
-
 void load_up(boolean action);
-
-//void pfiles_show(BITMAP *bmp);
+void load_file(char *name);
 void pfiles_hide(void);
 void pfiles_down(int mx, int my, int mb);
 void pfiles_up(int mx, int my, int mb);

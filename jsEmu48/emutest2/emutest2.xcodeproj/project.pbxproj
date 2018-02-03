@@ -11,6 +11,7 @@
 		F93860152023C1BB00CE7020 /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93860142023C1BA00CE7020 /* SDL2_ttf.framework */; };
 		F9386017202470E400CE7020 /* FreeSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F9386016202470E400CE7020 /* FreeSans.ttf */; };
 		F945D52820253D5400909E91 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F945D52620253CDB00909E91 /* SDL2_image.framework */; };
+		F945D52A20260C1900909E91 /* 48face4.png in Resources */ = {isa = PBXBuildFile; fileRef = F945D52920260C1900909E91 /* 48face4.png */; };
 		F9976BA42025386A00230D83 /* 48face2.png in Resources */ = {isa = PBXBuildFile; fileRef = F9976BA32025386A00230D83 /* 48face2.png */; };
 		F9E49100201BEA5C00355128 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E490FF201BEA5C00355128 /* AppDelegate.m */; };
 		F9E49102201BEA5C00355128 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F9E49101201BEA5C00355128 /* Assets.xcassets */; };
@@ -48,6 +49,7 @@
 		F9386016202470E400CE7020 /* FreeSans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FreeSans.ttf; path = ../src/FreeSans.ttf; sourceTree = "<group>"; };
 		F93C5A36202484C300F7BCDD /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = readme.txt; path = ../readme.txt; sourceTree = "<group>"; };
 		F945D52620253CDB00909E91 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
+		F945D52920260C1900909E91 /* 48face4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 48face4.png; path = emutest2/48face4.png; sourceTree = "<group>"; };
 		F9976BA32025386A00230D83 /* 48face2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 48face2.png; path = emutest2/48face2.png; sourceTree = "<group>"; };
 		F9E490FB201BEA5C00355128 /* emutest2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = emutest2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9E490FE201BEA5C00355128 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				F9E49150201BF5B200355128 /* hpemu.rom */,
 				F938601220238CBE00CE7020 /* zeldahp.dir */,
 				F9976BA32025386A00230D83 /* 48face2.png */,
+				F945D52920260C1900909E91 /* 48face4.png */,
 				F9E490FD201BEA5C00355128 /* emutest2 */,
 				F9E490FC201BEA5C00355128 /* Products */,
 				F9E49152201BF6D900355128 /* Frameworks */,
@@ -278,6 +281,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F938601320238D1400CE7020 /* zeldahp.dir in Resources */,
+				F945D52A20260C1900909E91 /* 48face4.png in Resources */,
 				F9976BA42025386A00230D83 /* 48face2.png in Resources */,
 				F9386017202470E400CE7020 /* FreeSans.ttf in Resources */,
 				F9E49102201BEA5C00355128 /* Assets.xcassets in Resources */,
