@@ -244,8 +244,9 @@ void button_draw(Button *b)
 		SDL_RenderDrawRect(renderer, &rectToDraw);
 	}
 	else {
-//		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-//		SDL_RenderDrawRect(renderer, &rectToDraw);
+		// debug only
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+		SDL_RenderDrawRect(renderer, &rectToDraw);
 	}
 
 	

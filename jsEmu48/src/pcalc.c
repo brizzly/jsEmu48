@@ -133,8 +133,8 @@ static void dnON(void)			{ kbd_on_pressed  (); }
 static void upON(boolean action)	{ kbd_on_released (); }
 
 static void dnZelda(void)			{  }
-//static void upZelda(boolean action)	{  load_file("zeldahp.dir"); }
-static void upZelda(boolean action)	{  load_file("Arkalite.lib"); }
+static void upZelda(boolean action)	{  load_file("zeldahp.dir"); }
+//static void upZelda(boolean action)	{  load_file("Arkalite.lib"); }
 
 
 
