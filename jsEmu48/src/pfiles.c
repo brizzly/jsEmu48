@@ -207,6 +207,8 @@ void load_file(char *name)
 
 #define PATH_SIZE   1024
 
+// /Users/admin/Documents/GIT/jsEmu48/jsEmu48/emutest2/emutest2/arkalite
+
 //static
 void load_up(boolean action)
 {

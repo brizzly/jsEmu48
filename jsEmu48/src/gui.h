@@ -29,7 +29,7 @@
 #define __GUI_H
 
 
-#define SDL_TTF
+//#define SDL_TTF
 
 
 #include "types.h"

@@ -29,7 +29,7 @@
 #define __DISPLAY_H
 
 //#include <allegro.h>
-#include <SDL.h>
+#include "SDL.h"
 #include <stdlib.h> 
 #include "types.h"
 

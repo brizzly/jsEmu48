@@ -39,23 +39,24 @@
 #include "pcalc.h"
 #include "pfiles.h"
 
-#include <SDL.h>
-#include <SDL_image.h>
+#include "SDL.h"
+#include "SDL_image.h"
 #ifdef SDL_TTF
-#include <SDL_ttf.h>
+#include "SDL_ttf.h"
 #endif
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
 
-const int SCREEN_WIDTH = 540;
+const int SCREEN_WIDTH = 800; //540;
 const int SCREEN_HEIGHT = 1100;
 
 
 SDL_Window* window = NULL;
 SDL_Renderer * renderer = NULL;
 SDL_Texture *texTarget = NULL;
+SDL_Texture *tex2Target = NULL;
 SDL_Texture *faceplateTexture = NULL;
 
 #ifdef SDL_TTF
@@ -81,20 +82,40 @@ unsigned int lastTime_timer_fps = 0;
 unsigned int lastTime_timer_emu = 0;
 
 
+/*
+ 
+ { 0,    16,	    timer1_update },
+#ifndef TRUE_TIMER2
+ { 0,    8192,   timer2_update },
+#endif
+ { 0,    4096,   display_update },
+
+static TimerEvent timer_events[] = {
+ { 0,    1000000/20 ,	FALSE,  gui_update }, // BPS_TO_TIMER(20)
+ { 0,    1000000,	FALSE,  true_speed_proc }, // BPS_TO_TIMER(1)
+ { 0,    1000000/8192 ,	FALSE,  timer2_update }, // BPS_TO_TIMER(8192)
+ */
+
+
+// display_update
 unsigned int lastTime_timer1 = 0;
-unsigned int delay_timer1 = 10; // 1000 / X = 20
+unsigned int delay_timer1 = 4096;//4096;
 
+// true_speed_proc
 unsigned int lastTime_timer2 = 0;
-unsigned int delay_timer2 = 1000;
+unsigned int delay_timer2 = 60;//1000;
 
+// timer1
 unsigned int lastTime_timer3 = 0;
-unsigned int delay_timer3 = 62; // 1000 / X = 16
+unsigned int delay_timer3 = 60;
 
+// timer2
 unsigned int lastTime_timer4 = 0;
-unsigned int delay_timer4 = 200;// 50; // 1000 / X = 8192
+unsigned int delay_timer4 = 8192;//8192;
 
+// display show
 unsigned int lastTime_timer5 = 0;
-unsigned int delay_timer5 = 100; // 100; //50;
+unsigned int delay_timer5 = 60; // 60 fps
 
 
 
@@ -239,10 +260,11 @@ static void program_init(void)
 		return;
 	}
 	
-	texTarget = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 131, 64);
+	tex2Target = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 504, 1124);
+	texTarget = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, 504, 1124);
 	
 	
-	SDL_Surface * faceplate = IMG_Load("48face4.png");
+	SDL_Surface * faceplate = IMG_Load("48face5.png");
 	if(faceplate) {
 		//printf("init text2 %s\n", buttons->text);
 		
@@ -250,10 +272,10 @@ static void program_init(void)
 	}
 	
 	
-	SDL_SetRenderTarget(renderer, texTarget);
-	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-	SDL_RenderClear(renderer);
-	SDL_SetRenderTarget(renderer, NULL);
+//	SDL_SetRenderTarget(renderer, texTarget);
+//	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+//	SDL_RenderClear(renderer);
+//	SDL_SetRenderTarget(renderer, NULL);
 	
 	SDL_UpdateWindowSurface( window );
 	
@@ -408,14 +430,14 @@ void mainloop()
 			lastTime_timer3 = currentTime;
 			timer1_update();
 		}
-/*
+
 		// timer2
 		if (currentTime > lastTime_timer4 + delay_timer4) {
 			//printf("Report(4) %dmsec: %d\n", delay_timer4, currentTime - lastTime_timer4);
 			lastTime_timer4 = currentTime;
 			timer2_update();
 		}
-*/
+
 		// display show
 		if (currentTime > lastTime_timer5 + delay_timer5) {
 			lastTime_timer5 = currentTime;

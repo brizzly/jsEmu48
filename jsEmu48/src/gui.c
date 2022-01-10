@@ -35,10 +35,10 @@
 #include "pabout.h"
 #include "gui.h"
 
-#include <SDL.h>
-#include <SDL_image.h>
+#include "SDL.h"
+#include "SDL_image.h"
 #ifdef SDL_TTF
-#include <SDL_ttf.h>
+#include "SDL_ttf.h"
 #endif
 
 extern SDL_Renderer * renderer;
@@ -91,12 +91,12 @@ void drawText(int index, int x, int y, int btn_w, int btn_h)
 void gui_initKeyboard(Button * calcbuttons)
 {
 	printf("init texts\n");
-	
+#ifdef SDL_TTF
 	if(ArialFonte == NULL) {
 		printf("init texts error Font NULL\n");
 		return;
 	}
-	
+#endif
 	SDL_Color couleurBlanche = {255, 255, 255};
 	
 #ifdef SDL_TTF

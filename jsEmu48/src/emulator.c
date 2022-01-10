@@ -26,7 +26,7 @@
  */
 
 //#include <allegro.h>
-#include <SDL.h>
+#include "SDL.h"
 #include <stdlib.h> 
 #include "types.h"
 #include "cpu.h"
@@ -69,16 +69,16 @@ static CycleEvent cycle_events[] = {
 };
 
 static TimerEvent timer_events[] = {
-    { 0,    50/*BPS_TO_TIMER(20)*/,	FALSE,  gui_update },
-    { 0,    1000/*BPS_TO_TIMER(1)*/,	FALSE,  true_speed_proc },
+    { 0,    1000000/20 /*BPS_TO_TIMER(20)*/,	FALSE,  gui_update },
+    { 0,    1000000 /*BPS_TO_TIMER(1)*/,	FALSE,  true_speed_proc },
 #ifdef TRUE_TIMER2
-    { 0,    1/*BPS_TO_TIMER(8192)*/,	FALSE,  timer2_update },
+    { 0,    1000000/8192 /*BPS_TO_TIMER(8192)*/,	FALSE,  timer2_update },
 #endif
     { 0,    0,			FALSE,  NULL }
 };
 
 volatile boolean please_exit = FALSE;
-dword emulator_speed = 4000000;// 4000000; //4000000;
+dword emulator_speed = 4000000;
 static int emulator_state = EMULATOR_RUN;// EMULATOR_STOP;
 
 void true_speed_proc(void)
@@ -170,13 +170,6 @@ boolean emulator_run(void)
     CycleEvent *cep;
     TimerEvent *tep;
     dword delta;
-	
-//	{ 0,    16,	    timer1_update },
-//#ifndef TRUE_TIMER2
-//	{ 0,    8192,   timer2_update },
-//#endif
-//	{ 0,    4096,   display_update },
-//
 
 	static boolean first_run = FALSE;
 	if(first_run == FALSE && emulator_state == EMULATOR_RUN)
@@ -184,6 +177,8 @@ boolean emulator_run(void)
 		first_run = TRUE;
     	start_timer_proc(gui_update);
     	start_timer_proc(true_speed_proc);
+		
+		
 	}
 	
 	if(please_exit) {
