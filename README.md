@@ -10,7 +10,12 @@ https://www.libsdl.org/projects/SDL_ttf/
 https://www.libsdl.org/download-2.0.php
 https://www.libsdl.org/projects/SDL_image/
 
-Install Emscripten
+Install git clone Emscripten
+
+./emsdk install latest
+./emsdk activate latest
+./emsdk_env.bat
+
 
 cd /src
 
