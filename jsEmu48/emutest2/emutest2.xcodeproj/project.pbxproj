@@ -18,6 +18,9 @@
 		849918D6278B8C6400992573 /* libSDL2-2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 849918CE278B8C6400992573 /* libSDL2-2.0.0.dylib */; };
 		84991927278B96A100992573 /* Arkalite.lib in Resources */ = {isa = PBXBuildFile; fileRef = 84991926278B966700992573 /* Arkalite.lib */; };
 		84991929278B9A9F00992573 /* 48face5.png in Resources */ = {isa = PBXBuildFile; fileRef = 84991928278B9A9F00992573 /* 48face5.png */; };
+		84E487FA278DCBA300A14456 /* libSDL2_ttf-2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E487F7278DCBA300A14456 /* libSDL2_ttf-2.0.0.dylib */; };
+		84E487FB278DCBA300A14456 /* libSDL2_ttf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E487F8278DCBA300A14456 /* libSDL2_ttf.a */; };
+		84E487FC278DCBA300A14456 /* libSDL2_ttf.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E487F9278DCBA300A14456 /* libSDL2_ttf.dylib */; };
 		F938601320238D1400CE7020 /* zeldahp.dir in Resources */ = {isa = PBXBuildFile; fileRef = F938601220238CBE00CE7020 /* zeldahp.dir */; };
 		F9386017202470E400CE7020 /* FreeSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F9386016202470E400CE7020 /* FreeSans.ttf */; };
 		F945D52A20260C1900909E91 /* 48face4.png in Resources */ = {isa = PBXBuildFile; fileRef = F945D52920260C1900909E91 /* 48face4.png */; };
@@ -139,6 +142,10 @@
 		84991925278B8C6D00992573 /* SDL_opengles2_gl2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDL_opengles2_gl2.h; sourceTree = "<group>"; };
 		84991926278B966700992573 /* Arkalite.lib */ = {isa = PBXFileReference; lastKnownFileType = file; name = Arkalite.lib; path = ../Arkalite.lib; sourceTree = "<group>"; };
 		84991928278B9A9F00992573 /* 48face5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 48face5.png; path = emutest2/48face5.png; sourceTree = "<group>"; };
+		84E487F3278DC8DB00A14456 /* SDL_ttf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDL_ttf.h; sourceTree = "<group>"; };
+		84E487F7278DCBA300A14456 /* libSDL2_ttf-2.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libSDL2_ttf-2.0.0.dylib"; path = "SDL/lib/libSDL2_ttf-2.0.0.dylib"; sourceTree = "<group>"; };
+		84E487F8278DCBA300A14456 /* libSDL2_ttf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2_ttf.a; path = SDL/lib/libSDL2_ttf.a; sourceTree = "<group>"; };
+		84E487F9278DCBA300A14456 /* libSDL2_ttf.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSDL2_ttf.dylib; path = SDL/lib/libSDL2_ttf.dylib; sourceTree = "<group>"; };
 		F938601220238CBE00CE7020 /* zeldahp.dir */ = {isa = PBXFileReference; lastKnownFileType = file; name = zeldahp.dir; path = ../zeldahp.dir; sourceTree = "<group>"; };
 		F9386016202470E400CE7020 /* FreeSans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FreeSans.ttf; path = ../src/FreeSans.ttf; sourceTree = "<group>"; };
 		F93C5A36202484C300F7BCDD /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = readme.txt; path = ../readme.txt; sourceTree = "<group>"; };
@@ -208,7 +215,10 @@
 				849918D6278B8C6400992573 /* libSDL2-2.0.0.dylib in Frameworks */,
 				849918D5278B8C6400992573 /* libSDL2.dylib in Frameworks */,
 				F9E49154201BF6DA00355128 /* CoreFoundation.framework in Frameworks */,
+				84E487FC278DCBA300A14456 /* libSDL2_ttf.dylib in Frameworks */,
+				84E487FB278DCBA300A14456 /* libSDL2_ttf.a in Frameworks */,
 				849918D1278B8C6400992573 /* libSDL2_test.a in Frameworks */,
+				84E487FA278DCBA300A14456 /* libSDL2_ttf-2.0.0.dylib in Frameworks */,
 				849918C6278B8BAC00992573 /* CoreAudio.framework in Frameworks */,
 				849918D4278B8C6400992573 /* libSDL2main.a in Frameworks */,
 				849918CF278B8C6400992573 /* libSDL2_image.a in Frameworks */,
@@ -244,6 +254,7 @@
 				849918E3278B8C6D00992573 /* SDL_endian.h */,
 				849918E4278B8C6D00992573 /* SDL_error.h */,
 				849918E5278B8C6D00992573 /* begin_code.h */,
+				84E487F3278DC8DB00A14456 /* SDL_ttf.h */,
 				849918E6278B8C6D00992573 /* SDL_types.h */,
 				849918E7278B8C6D00992573 /* SDL_keycode.h */,
 				849918E8278B8C6D00992573 /* SDL_keyboard.h */,
@@ -408,6 +419,9 @@
 			children = (
 				849918C5278B8BAC00992573 /* CoreAudio.framework */,
 				F9E49153201BF6DA00355128 /* CoreFoundation.framework */,
+				84E487F7278DCBA300A14456 /* libSDL2_ttf-2.0.0.dylib */,
+				84E487F8278DCBA300A14456 /* libSDL2_ttf.a */,
+				84E487F9278DCBA300A14456 /* libSDL2_ttf.dylib */,
 				849918CA278B8C6400992573 /* libSDL2_image-2.0.0.dylib */,
 				849918C7278B8C6400992573 /* libSDL2_image.a */,
 				849918CB278B8C6400992573 /* libSDL2_image.dylib */,
@@ -658,6 +672,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+					"$(PROJECT_DIR)/SDL",
 				);
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = emutest2/Info.plist;
@@ -690,6 +705,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+					"$(PROJECT_DIR)/SDL",
 				);
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = emutest2/Info.plist;

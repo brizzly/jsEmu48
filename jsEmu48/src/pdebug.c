@@ -237,7 +237,7 @@ static void step_up(boolean action)
 
 void pdebug_draw_true_speed(dword speed)
 {
-	 printf("True speed: %10u Hz\n", speed);
+	 //printf("True speed: %10u Hz\n", speed);
 	
 //    if (!debug_bmp) {
 //	return;

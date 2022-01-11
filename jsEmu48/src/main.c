@@ -49,8 +49,8 @@
 #include <emscripten.h>
 #endif
 
-const int SCREEN_WIDTH = 800; //540;
-const int SCREEN_HEIGHT = 1100;
+const int SCREEN_WIDTH = 524;
+const int SCREEN_HEIGHT = 750;
 
 
 SDL_Window* window = NULL;
@@ -263,13 +263,13 @@ static void program_init(void)
 	tex2Target = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 504, 1124);
 	texTarget = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, 504, 1124);
 	
-	
+	/*
 	SDL_Surface * faceplate = IMG_Load("48face5.png");
 	if(faceplate) {
 		//printf("init text2 %s\n", buttons->text);
 		
 		faceplateTexture = SDL_CreateTextureFromSurface( renderer, faceplate );
-	}
+	}*/
 	
 	
 //	SDL_SetRenderTarget(renderer, texTarget);

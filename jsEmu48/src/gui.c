@@ -231,9 +231,9 @@ void button_draw(Button *b)
 	//SDL_RenderDrawRect(renderer, &rectToDraw);
 
 
-	if(b->index >= 49) {
+//	if(b->index >= 49) {
 		drawText(b->index, b->x*2, 10 + b->y*2, b->w*2, b->h*2);
-	}
+//	}
 
 	int c;
 	

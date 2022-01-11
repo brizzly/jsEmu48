@@ -33,7 +33,7 @@
 #include "pcalc.h"
 
 #define LCD_X	0 //76
-#define LCD_Y	110 //150
+#define LCD_Y	0 //110 //150
 
 address menu_base;
 address display_base;
