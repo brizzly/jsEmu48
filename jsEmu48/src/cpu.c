@@ -30,6 +30,7 @@
 #include "bus.h"
 #include "opcodes.h"
 #include "cpu.h"
+#include <stdio.h>
 
 Cpu cpu;
 
@@ -37,6 +38,7 @@ Cpu cpu;
 
 void cpu_interrupt(void)
 {
+	printf("cpu_interrupt\n");
     if (cpu.inte) {
 		cpu.inte = FALSE;
 		cpu.rstk_ptr = (cpu.rstk_ptr - 1) & 7;

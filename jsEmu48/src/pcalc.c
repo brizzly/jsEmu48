@@ -140,10 +140,10 @@ static void upZelda(boolean action)	{  load_file("Arkalite.lib"); }
 
 const int pox = 2;
 const int poy = 55;
-const int pow1 = 40; //34;
+const int pow1 = 40;
 const int poh1 = 18;
 const int poh2 = 22;
-const int pow2 = 48;//42;
+const int pow2 = 48;
 const int ystart = 80;
 const int yspacing = 14;
 const int xstart = 5;
@@ -151,68 +151,82 @@ const int xspacing = (pow1+2);
 const int xspacing2 = (pow2+2);
 const int enter_w = pow1*2 + 2;
 
+static KBMapping kb_sdl_mapping[] = {
+	
+	SDLK_0, dn03, up03,
+	SDLK_1, dn13, up13,
+	SDLK_2, dn12, up12,
+	SDLK_3, dn11, up11,
+	SDLK_4, dn23, up23,
+	SDLK_5, dn22, up22,
+	SDLK_6, dn21, up21,
+	SDLK_7, dn33, up33,
+	SDLK_8, dn32, up32,
+	SDLK_9, dn31, up31
+};
+
 static Button calc_buttons[] = {
 	
-    { 0, 	pox+xstart+(xspacing*0),	ystart+(0*yspacing)+poy,    pow1,	poh1, BUTTON_B1RELEASE | BUTTON_B2TOGGLE,	"A",	dn14,	up14 },
-    { 1,	pox+xstart+(xspacing*1),   	ystart+(0*yspacing)+poy,    pow1,	poh1, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "B",	dn84,	up84 },
-    { 2,	pox+xstart+(xspacing*2),   	ystart+(0*yspacing)+poy,    pow1,	poh1, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "C",	dn83,	up83 },
-    { 3,	pox+xstart+(xspacing*3),  	ystart+(0*yspacing)+poy,    pow1,	poh1, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "D",	dn82,	up82 },
-    { 4,	pox+xstart+(xspacing*4),  	ystart+(0*yspacing)+poy,    pow1,	poh1, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "E",	dn81,	up81 },
-    { 5,	pox+xstart+(xspacing*5),  	ystart+(0*yspacing)+poy,    pow1,	poh1, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "F",	dn80,	up80 },
+    { 0, 	pox+xstart+(xspacing*0),	ystart+(0*yspacing)+poy,    pow1,	poh1, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "A", "", "", dn14,	up14 },
+    { 1,	pox+xstart+(xspacing*1),   	ystart+(0*yspacing)+poy,    pow1,	poh1, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "B",	"", "", dn84,	up84 },
+    { 2,	pox+xstart+(xspacing*2),   	ystart+(0*yspacing)+poy,    pow1,	poh1, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "C",	"", "", dn83,	up83 },
+    { 3,	pox+xstart+(xspacing*3),  	ystart+(0*yspacing)+poy,    pow1,	poh1, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "D",	"", "", dn82,	up82 },
+    { 4,	pox+xstart+(xspacing*4),  	ystart+(0*yspacing)+poy,    pow1,	poh1, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "E",	"", "", dn81,	up81 },
+    { 5,	pox+xstart+(xspacing*5),  	ystart+(0*yspacing)+poy,    pow1,	poh1, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "F",	"", "", dn80,	up80 },
 	
-	{ 6,	pox+xstart+(xspacing*0),    ystart+(1*yspacing)+poy+10,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "MTH",	dn24,	up24 },
-    { 7,	pox+xstart+(xspacing*1),   	ystart+(1*yspacing)+poy+10,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "PRG",	dn74,	up74 },
-    { 8,	pox+xstart+(xspacing*2),   	ystart+(1*yspacing)+poy+10,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "CST",	dn73,	up73 },
-    { 9,	pox+xstart+(xspacing*3),  	ystart+(1*yspacing)+poy+10,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "VAR",	dn72,	up72 },
-    { 10,	pox+xstart+(xspacing*4),  	ystart+(1*yspacing)+poy+10,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "^",	dn71,	up71 },
-    { 11,	pox+xstart+(xspacing*5),  	ystart+(1*yspacing)+poy+10,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "NXT",	dn70,	up70 },
+	{ 6,	pox+xstart+(xspacing*0),    ystart+(1*yspacing)+poy+10,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "MTH", "RAD", "POLAR",	dn24,	up24 },
+    { 7,	pox+xstart+(xspacing*1),   	ystart+(1*yspacing)+poy+10,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "PRG", "", "CHARS",	dn74,	up74 },
+    { 8,	pox+xstart+(xspacing*2),   	ystart+(1*yspacing)+poy+10,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "CST", "", "MODES",	dn73,	up73 },
+    { 9,	pox+xstart+(xspacing*3),  	ystart+(1*yspacing)+poy+10,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "VAR", "", "MEMORY",	dn72,	up72 },
+    { 10,	pox+xstart+(xspacing*4),  	ystart+(1*yspacing)+poy+10,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "^", "", "STACK",	dn71,	up71 },
+    { 11,	pox+xstart+(xspacing*5),  	ystart+(1*yspacing)+poy+10,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "NXT", "PREV", "MENU",	dn70,	up70 },
 	
-	{ 12,	pox+xstart+(xspacing*0),    ystart+(2*yspacing)+poy+20,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "'",	dn04,	up04 },
-    { 13,	pox+xstart+(xspacing*1),   	ystart+(2*yspacing)+poy+20,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "STO",	dn64,	up64 },
-    { 14, 	pox+xstart+(xspacing*2),   	ystart+(2*yspacing)+poy+20,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "EVAL",	dn63,	up63 },
-    { 15,	pox+xstart+(xspacing*3),  	ystart+(2*yspacing)+poy+20,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "<",	dn62,	up62 },
-    { 16,	pox+xstart+(xspacing*4),  	ystart+(2*yspacing)+poy+20,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "v",	dn61,	up61 },
-    { 17,	pox+xstart+(xspacing*5),  	ystart+(2*yspacing)+poy+20,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, ">",	dn60,	up60 },
+	{ 12,	pox+xstart+(xspacing*0),    ystart+(2*yspacing)+poy+20,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "'", "UP", "HOME",	dn04,	up04 },
+    { 13,	pox+xstart+(xspacing*1),   	ystart+(2*yspacing)+poy+20,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "STO", "REF", "RCL",	dn64,	up64 },
+    { 14, 	pox+xstart+(xspacing*2),   	ystart+(2*yspacing)+poy+20,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "EVAL", "->NUM", "UNDO",	dn63,	up63 },
+    { 15,	pox+xstart+(xspacing*3),  	ystart+(2*yspacing)+poy+20,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "<", "PICTURE", "",	dn62,	up62 },
+    { 16,	pox+xstart+(xspacing*4),  	ystart+(2*yspacing)+poy+20,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "v", "VIEW", "",	dn61,	up61 },
+    { 17,	pox+xstart+(xspacing*5),  	ystart+(2*yspacing)+poy+20,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, ">", "SWAP", "",	dn60,	up60 },
 	
-	{ 18,	pox+xstart+(xspacing*0),    ystart+(3*yspacing)+poy+30,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "SIN",	dn34,	up34 },
-    { 19,	pox+xstart+(xspacing*1),   	ystart+(3*yspacing)+poy+30,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "COS",	dn54,	up54 },
-    { 20,	pox+xstart+(xspacing*2),   	ystart+(3*yspacing)+poy+30,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "TAN",	dn53,	up53 },
-    { 21,	pox+xstart+(xspacing*3),  	ystart+(3*yspacing)+poy+30,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "/x",	dn52,	up52 },
-    { 22,	pox+xstart+(xspacing*4),  	ystart+(3*yspacing)+poy+30,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "yx",	dn51,	up51 },
-    { 23,	pox+xstart+(xspacing*5),  	ystart+(3*yspacing)+poy+30,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "1/x",	dn50,	up50 },
+	{ 18,	pox+xstart+(xspacing*0),    ystart+(3*yspacing)+poy+30,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "SIN", "ASIN", "δ",	dn34,	up34 },
+    { 19,	pox+xstart+(xspacing*1),   	ystart+(3*yspacing)+poy+30,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "COS", "ACOS", "",	dn54,	up54 },
+    { 20,	pox+xstart+(xspacing*2),   	ystart+(3*yspacing)+poy+30,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "TAN", "ATAN", "Σ",	dn53,	up53 },
+    { 21,	pox+xstart+(xspacing*3),  	ystart+(3*yspacing)+poy+30,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "√x", "xx", "x√y",	dn52,	up52 },
+    { 22,	pox+xstart+(xspacing*4),  	ystart+(3*yspacing)+poy+30,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "yx", "10x", "LOG",	dn51,	up51 },
+    { 23,	pox+xstart+(xspacing*5),  	ystart+(3*yspacing)+poy+30,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "1/x", "ex", "LN",	dn50,	up50 },
 	
-	{ 24,	pox+xstart+(xspacing*0),    ystart+(4*yspacing)+poy+40,    enter_w,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "ENTER",dn44,	up44 },
-    { 25,	enter_w-pow1+pox+xstart+(xspacing*1),   ystart+(4*yspacing)+poy+40,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "+/-",	dn43,	up43 },
-    { 26,	enter_w-pow1+pox+xstart+(xspacing*2),  ystart+(4*yspacing)+poy+40,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "EEX",	dn42,	up42 },
-    { 27,	enter_w-pow1+pox+xstart+(xspacing*3),  ystart+(4*yspacing)+poy+40,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "DEL",	dn41,	up41 },
-    { 28,	enter_w-pow1+pox+xstart+(xspacing*4),  ystart+(4*yspacing)+poy+40,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "<-",	dn40,	up40 },
+	{ 24,	pox+xstart+(xspacing*0),    ystart+(4*yspacing)+poy+40,    enter_w,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "ENTER", "EQUATION", "MATRIX", dn44,	up44 },
+    { 25,	enter_w-pow1+pox+xstart+(xspacing*1),   ystart+(4*yspacing)+poy+40,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "+/-", "EDIT", "CMD",	dn43,	up43 },
+    { 26,	enter_w-pow1+pox+xstart+(xspacing*2),  ystart+(4*yspacing)+poy+40,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "EEX", "PURG", "ARG",	dn42,	up42 },
+    { 27,	enter_w-pow1+pox+xstart+(xspacing*3),  ystart+(4*yspacing)+poy+40,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "DEL", "CLEAR", "",	dn41,	up41 },
+    { 28,	enter_w-pow1+pox+xstart+(xspacing*4),  ystart+(4*yspacing)+poy+40,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "<-", "DROP", "",	dn40,	up40 },
 	
-	{ 29,	pox+xstart+(xspacing*0),    ystart+(5*yspacing)+poy+50,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "a",	dn35,	up35 },
-    { 30,	pox+xstart+(xspacing2*1),   ystart+(5*yspacing)+poy+50,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "7",	dn33,	up33 },
-    { 31,	pox+xstart+(xspacing2*2),  ystart+(5*yspacing)+poy+50,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "8",	dn32,	up32 },
-    { 32,	pox+xstart+(xspacing2*3),  ystart+(5*yspacing)+poy+50,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "9",	dn31,	up31 },
-    { 33,	pox+xstart+(xspacing2*4),  ystart+(5*yspacing)+poy+50,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "/",	dn30,	up30 },
+	{ 29,	pox+xstart+(xspacing*0),    ystart+(5*yspacing)+poy+50,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "α", "USER", "ENTRY",	dn35,	up35 },
+    { 30,	pox+xstart+(xspacing2*1),   ystart+(5*yspacing)+poy+50,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "7", "", "SOLVE",	dn33,	up33 },
+    { 31,	pox+xstart+(xspacing2*2),  ystart+(5*yspacing)+poy+50,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "8", "", "PLOT",	dn32,	up32 },
+    { 32,	pox+xstart+(xspacing2*3),  ystart+(5*yspacing)+poy+50,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "9", "", "SYMBOLIC",	dn31,	up31 },
+    { 33,	pox+xstart+(xspacing2*4),  ystart+(5*yspacing)+poy+50,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "/", "( )", "#",	dn30,	up30 },
 	
-	{ 34,	pox+xstart+(xspacing*0),    ystart+(6*yspacing)+poy+60,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "<-",	dn25,	up25 },
-    { 35,	pox+xstart+(xspacing2*1),   ystart+(6*yspacing)+poy+60,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "4",	dn23,	up23 },
-    { 36,	pox+xstart+(xspacing2*2),  ystart+(6*yspacing)+poy+60,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "5",	dn22,	up22 },
-    { 37,	pox+xstart+(xspacing2*3),  ystart+(6*yspacing)+poy+60,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "6",	dn21,	up21 },
-    { 38,	pox+xstart+(xspacing2*4),  ystart+(6*yspacing)+poy+60,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "X",	dn20,	up20 },
+	{ 34,	pox+xstart+(xspacing*0),    ystart+(6*yspacing)+poy+60,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "", "red", "",	dn25,	up25 },
+    { 35,	pox+xstart+(xspacing2*1),   ystart+(6*yspacing)+poy+60,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "4", "", "TIME",	dn23,	up23 },
+    { 36,	pox+xstart+(xspacing2*2),  ystart+(6*yspacing)+poy+60,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "5", "", "STAT",	dn22,	up22 },
+    { 37,	pox+xstart+(xspacing2*3),  ystart+(6*yspacing)+poy+60,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "6", "", "UNITS",	dn21,	up21 },
+    { 38,	pox+xstart+(xspacing2*4),  ystart+(6*yspacing)+poy+60,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "X", "[ ]", "_",	dn20,	up20 },
 	
-	{ 39,	pox+xstart+(xspacing*0),    ystart+(7*yspacing)+poy+70,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "->",	dn15,	up15 },
-    { 40,	pox+xstart+(xspacing2*1),   ystart+(7*yspacing)+poy+70,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "1",	dn13,	up13 },
-    { 41,	pox+xstart+(xspacing2*2),  ystart+(7*yspacing)+poy+70,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "2",	dn12,	up12 },
-    { 42,	pox+xstart+(xspacing2*3),  ystart+(7*yspacing)+poy+70,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "3",	dn11,	up11 },
-    { 43,	pox+xstart+(xspacing2*4),  ystart+(7*yspacing)+poy+70,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "-",	dn10,	up10 },
+	{ 39,	pox+xstart+(xspacing*0),    ystart+(7*yspacing)+poy+70,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "", "", "green",	dn15,	up15 },
+    { 40,	pox+xstart+(xspacing2*1),   ystart+(7*yspacing)+poy+70,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "1", "", "I/O",	dn13,	up13 },
+    { 41,	pox+xstart+(xspacing2*2),  ystart+(7*yspacing)+poy+70,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "2", "", "LIBRARY",	dn12,	up12 },
+    { 42,	pox+xstart+(xspacing2*3),  ystart+(7*yspacing)+poy+70,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "3", "", "EQ LIB",	dn11,	up11 },
+    { 43,	pox+xstart+(xspacing2*4),  ystart+(7*yspacing)+poy+70,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "-", "<< >>", "\" \"",	dn10,	up10 },
 	
-	{ 44,	pox+xstart+(xspacing*0),    ystart+(8*yspacing)+poy+80,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "ON",	dnON,	upON },
-    { 45,	pox+xstart+(xspacing2*1),   ystart+(8*yspacing)+poy+80,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "0",	dn03,	up03 },
-    { 46,	pox+xstart+(xspacing2*2),  ystart+(8*yspacing)+poy+80,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, ".",	dn02,	up02 },
-    { 47, 	pox+xstart+(xspacing2*3),  ystart+(8*yspacing)+poy+80,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "SPC",	dn01,	up01 },
-    { 48,	pox+xstart+(xspacing2*4),  ystart+(8*yspacing)+poy+80,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "+",	dn00,	up00 },
+	{ 44,	pox+xstart+(xspacing*0),    ystart+(8*yspacing)+poy+80,    pow1,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "ON", "CONT", "OFF",	dnON,	upON },
+    { 45,	pox+xstart+(xspacing2*1),   ystart+(8*yspacing)+poy+80,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "0", "=", "->",	dn03,	up03 },
+    { 46,	pox+xstart+(xspacing2*2),  ystart+(8*yspacing)+poy+80,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, ".", ",", "back",	dn02,	up02 },
+    { 47, 	pox+xstart+(xspacing2*3),  ystart+(8*yspacing)+poy+80,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "SPC", "π", "∡",	dn01,	up01 },
+    { 48,	pox+xstart+(xspacing2*4),  ystart+(8*yspacing)+poy+80,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "+", "{ }", ": :",	dn00,	up00 },
 	
-	{ 49,	pox+xstart,    ystart+(9*yspacing)+poy+90,	130, 20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "Game",	dnZelda,	upZelda },
-    { 50,	pox+xstart,    poy,	    0,	0,  0,					NULL,	NULL,	NULL }
+	{ 49,	pox+xstart,    ystart+(9*yspacing)+poy+90,	130, 20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "Game", "", "",	dnZelda,	upZelda },
+    { 50,	pox+xstart,    poy,	    0,	0,  0,					NULL,	NULL, NULL, NULL,	NULL }
 };
 
 
@@ -221,12 +235,10 @@ void pcalc_init()
 	gui_initKeyboard(calc_buttons);
 }
 
-void pcalc_show(/*BITMAP *bmp*/)
+void pcalc_show()
 {
-	//calc_bmp = bmp;
-
-   // clear_to_color(calc_bmp, color[C_PANEL_BACK]);
-    button_draw_all(/*calc_bmp,*/ calc_buttons);
+	//clear_to_color(calc_bmp, color[C_PANEL_BACK]);
+    button_draw_all(calc_buttons);
 }
 
 
@@ -243,4 +255,30 @@ void pcalc_down(int mx, int my, int mb)
 void pcalc_up(int mx, int my, int mb)
 {
     button_mouse_up(calc_buttons, mx, my, mb);
+}
+
+void pcalc_kb_down(SDL_Keycode sdl_event)
+{
+	KBMapping * mapping = kb_sdl_mapping;
+	while(mapping->SDL_event_id)
+	{
+		if(sdl_event == mapping->SDL_event_id) {
+			mapping->down;
+			break;
+		}
+		mapping ++;
+	}
+}
+
+void pcalc_kb_up(SDL_Keycode sdl_event)
+{
+	KBMapping * mapping = kb_sdl_mapping;
+	while(mapping->SDL_event_id)
+	{
+		if(sdl_event == mapping->SDL_event_id) {
+			mapping->up;
+			break;
+		}
+		mapping ++;
+	}
 }

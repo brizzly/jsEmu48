@@ -49,6 +49,8 @@ typedef struct {
     int w, h;
     int flags;
     char *text;
+	char *textB;
+	char *textC;
     void (*down)(void);
     void (*up)(boolean action);
 } Button;

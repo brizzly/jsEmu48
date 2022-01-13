@@ -61,6 +61,7 @@ SDL_Texture *faceplateTexture = NULL;
 
 #ifdef SDL_TTF
 TTF_Font * ArialFonte = NULL;
+TTF_Font * ArialFonte2 = NULL;
 #endif
 
 SDL_TimerID my_timer0_id;
@@ -243,6 +244,7 @@ static void program_init(void)
 	}
 	
 	ArialFonte = TTF_OpenFont("FreeSans.ttf", 14);
+	ArialFonte2 = TTF_OpenFont("FreeSans.ttf", 10);
 #endif
 	
 	
@@ -310,6 +312,7 @@ static void program_exit(void)
 	*/
 #ifdef SDL_TTF
 	TTF_CloseFont(ArialFonte);
+	TTF_CloseFont(ArialFonte2);
 	TTF_Quit();
 #endif
 	SDL_DestroyRenderer(renderer);
@@ -341,6 +344,52 @@ boolean refreshSDL()
 				pcalc_down(event.button.x, event.button.y, 1);
 			}
 			break;
+				
+			case SDL_KEYDOWN:
+				pcalc_kb_down(event.key.keysym.sym);
+				/*
+			switch (event.key.keysym.sym)
+			{
+				case SDLK_LEFT:
+					
+					break;
+				case SDLK_RIGHT:
+					kbd_key_pressed  (1, 3);
+					break;
+				case SDLK_UP:
+					
+					break;
+				case SDLK_DOWN:
+					
+					break;
+				case SDLK_ESCAPE:
+					
+					break;
+			}*/
+		   break;
+				
+			case SDL_KEYUP:
+				pcalc_kb_up(event.key.keysym.sym);
+				/*
+			switch (event.key.keysym.sym)
+			{
+				case SDLK_LEFT:
+					
+					break;
+				case SDLK_RIGHT:
+					kbd_key_released  (1, 3);
+					break;
+				case SDLK_UP:
+					
+					break;
+				case SDLK_DOWN:
+					
+					break;
+				case SDLK_ESCAPE:
+					
+					break;
+			}*/
+		   break;
 				
 			case SDL_USEREVENT:
 			{

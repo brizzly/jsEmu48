@@ -45,10 +45,17 @@ extern SDL_Renderer * renderer;
 extern SDL_Texture * faceplateTexture;
 #ifdef SDL_TTF
 extern TTF_Font * ArialFonte;
+extern TTF_Font * ArialFonte2;
 #endif
 
 SDL_Surface * surfA[49];
 SDL_Texture * textA[49];
+
+SDL_Surface * surfB[49];
+SDL_Texture * textB[49];
+
+SDL_Surface * surfC[49];
+SDL_Texture * textC[49];
 
 
 
@@ -79,13 +86,34 @@ void drawText(int index, int x, int y, int btn_w, int btn_h)
 {
 	SDL_Surface * letterSurface = surfA[index];
 	SDL_Texture * letterTexture = textA[index];
-	if(letterSurface == NULL || letterTexture == NULL) {
-		return;
+	if(letterSurface != NULL && letterTexture != NULL) {
+		int texW = letterSurface->w;
+		int texH = letterSurface->h;
+		SDL_Rect destRect = {x + (btn_w-texW)/2, y, texW, texH};
+		SDL_RenderCopy(renderer, letterTexture, NULL, &destRect);
 	}
-	int texW = letterSurface->w;
-	int texH = letterSurface->h;
-	SDL_Rect destRect = {x + (btn_w-texW)/2, y, texW, texH};
-	SDL_RenderCopy(renderer, letterTexture, NULL, &destRect);
+
+	SDL_Surface * letterSurface2 = surfB[index];
+	SDL_Texture * letterTexture2 = textB[index];
+	if(letterSurface2 != NULL && letterTexture2 != NULL) {
+		int texW = letterSurface2->w;
+		int texH = letterSurface2->h;
+		SDL_Rect destRect = {x + (btn_w-texW)/2, y, texW, texH};
+		destRect.y -= 10;
+		destRect.x -= 16;
+		SDL_RenderCopy(renderer, letterTexture2, NULL, &destRect);
+	}
+	
+	SDL_Surface * letterSurface3 = surfC[index];
+	SDL_Texture * letterTexture3 = textC[index];
+	if(letterSurface3 != NULL && letterTexture3 != NULL) {
+		int texW = letterSurface3->w;
+		int texH = letterSurface3->h;
+		SDL_Rect destRect = {x + (btn_w-texW)/2, y, texW, texH};
+		destRect.y -= 10;
+		destRect.x += 16;
+		SDL_RenderCopy(renderer, letterTexture3, NULL, &destRect);
+	}
 }
 
 void gui_initKeyboard(Button * calcbuttons)
@@ -98,6 +126,8 @@ void gui_initKeyboard(Button * calcbuttons)
 	}
 #endif
 	SDL_Color couleurBlanche = {255, 255, 255};
+	SDL_Color couleurGreen = {125, 215, 235};
+	SDL_Color couleurPurple = {191, 192, 236};
 	
 #ifdef SDL_TTF
 	int i=0;
@@ -106,21 +136,12 @@ void gui_initKeyboard(Button * calcbuttons)
 	{
 		SDL_Surface * s = NULL;
 		SDL_Texture * t = NULL;
-		
-		
-		if(buttons->text && strcmp(buttons->text, "") != 0) {
-			//printf("init text %s\n", buttons->text);
-
+		if(buttons->text && strcmp(buttons->text, "") != 0)
+		{
 			s = TTF_RenderText_Blended (ArialFonte, buttons->text, couleurBlanche);
-			
 			if(s) {
-				//printf("init text2 %s\n", buttons->text);
-			
 				t = SDL_CreateTextureFromSurface( renderer, s );
 			}
-		}
-		else {
-			printf("init text NULL\n");
 		}
 		
 		surfA[i] = s;
@@ -129,15 +150,51 @@ void gui_initKeyboard(Button * calcbuttons)
 		i++;
 		buttons++;
 	}
+	
+	i=0;
+	buttons = calcbuttons;
+	while(buttons->textB)
+	{
+		SDL_Surface * s = NULL;
+		SDL_Texture * t = NULL;
+		if(buttons->textB && strcmp(buttons->textB, "") != 0)
+		{
+			s = TTF_RenderText_Blended (ArialFonte2, buttons->textB, couleurPurple);
+			if(s) {
+				t = SDL_CreateTextureFromSurface( renderer, s );
+			}
+		}
+		surfB[i] = s;
+		textB[i] = t;
+		i++;
+		buttons++;
+	}
+	
+	i=0;
+	buttons = calcbuttons;
+	while(buttons->textC)
+	{
+		SDL_Surface * s = NULL;
+		SDL_Texture * t = NULL;
+		if(buttons->textC && strcmp(buttons->textC, "") != 0)
+		{
+			s = TTF_RenderText_Blended (ArialFonte2, buttons->textC, couleurGreen);
+			if(s) {
+				t = SDL_CreateTextureFromSurface( renderer, s );
+			}
+		}
+		surfC[i] = s;
+		textC[i] = t;
+		i++;
+		buttons++;
+	}
+	
+	
 #endif
 }
 
 void gui_init(void)
-{	
-    //clear_to_color(screen, color[C_BACKGROUND]);
-    //gui_show_panel(PANEL_MENU);
-    //gui_show_panel(PANEL_CALC);
-    //gui_show_panel(PANEL_ABOUT);
+{
 }
 
 void gui_exit(void)
@@ -223,21 +280,16 @@ void gui_hide_panel(int i)
 
 void button_draw(Button *b)
 {
-//	SDL_Rect rectToDraw = {/*60+*/b->x, /*20+*/b->y, b->w, b->h};
 	SDL_Rect rectToDraw = {b->x*2, b->y*2, b->w*2, b->h*2};
 
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x33);
-//	SDL_RenderFillRect(renderer, &rectToDraw);
-	//SDL_RenderDrawRect(renderer, &rectToDraw);
+	SDL_RenderFillRect(renderer, &rectToDraw);
 
-
-//	if(b->index >= 49) {
-		drawText(b->index, b->x*2, 10 + b->y*2, b->w*2, b->h*2);
-//	}
+	drawText(b->index, b->x*2, 10 + b->y*2, b->w*2, b->h*2);
 
 	int c;
 	
-//	c = color[(b->flags&BUTTON_PUSHED) ? C_BUTTON_PUSHED : C_BUTTON_BACK];
+	c = color[(b->flags&BUTTON_PUSHED) ? C_BUTTON_PUSHED : C_BUTTON_BACK];
 
 	if(b->flags&BUTTON_PUSHED) {
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
