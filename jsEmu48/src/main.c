@@ -346,41 +346,71 @@ boolean refreshSDL()
 			break;
 				
 			case SDL_KEYDOWN:
-				printf("%d %d %d\n", event.key.keysym.sym, event.key.keysym.scancode, SDL_SCANCODE_0);
+				printf("%d %d\n", event.key.keysym.sym, event.key.keysym.scancode);
 				//KEYS[event.key.keysym.sym] = 1;
 				
 				pcalc_kb_down(event.key.keysym.scancode);
 				
 			switch (event.key.keysym.scancode)
 			{
-				case SDL_SCANCODE_KP_0:
-					printf("0");
+				case SDL_SCANCODE_ESCAPE:
+					kbd_on_pressed();
 					break;
-				case SDLK_LEFT:
-					
+				case SDL_SCANCODE_RETURN:
+					kbd_key_pressed  (4, 4);
 					break;
-				case SDLK_RIGHT:
-					kbd_key_pressed  (1, 3);
+				case SDL_SCANCODE_BACKSPACE:
+					kbd_key_pressed  (4, 0);
 					break;
-				case SDLK_UP:
-					
+				case SDL_SCANCODE_LEFT:
+					kbd_key_pressed  (6, 2);
 					break;
-				case SDLK_DOWN:
-					
+				case SDL_SCANCODE_RIGHT:
+					kbd_key_pressed  (6, 0);
 					break;
-				case SDLK_ESCAPE:
-					
+				case SDL_SCANCODE_UP:
+					kbd_key_pressed  (7, 1);
+					break;
+				case SDL_SCANCODE_DOWN:
+					kbd_key_pressed  (6, 1);
+					break;
+				default:
 					break;
 			}
 		   break;
 				
 			case SDL_KEYUP:
-				//KEYS[event.key.keysym.sym] = 0;
 				pcalc_kb_up(event.key.keysym.scancode);
 				
+				switch (event.key.keysym.scancode)
+				{
+					case SDL_SCANCODE_ESCAPE:
+						kbd_on_released();
+						break;
+					case SDL_SCANCODE_RETURN:
+						kbd_key_released  (4, 4);
+						break;
+					case SDL_SCANCODE_BACKSPACE:
+						kbd_key_released  (4, 0);
+						break;
+					case SDL_SCANCODE_LEFT:
+						kbd_key_released  (6, 2);
+						break;
+					case SDL_SCANCODE_RIGHT:
+						kbd_key_released  (6, 0);
+						break;
+					case SDL_SCANCODE_UP:
+						kbd_key_released  (7, 1);
+						break;
+					case SDL_SCANCODE_DOWN:
+						kbd_key_released  (6, 1);
+						break;
+					default:
+						break;
+				}
+				
 				/*
-			switch (event.key.keysym.sym)
-			{
+
 				case SDLK_LEFT:
 					
 					break;
@@ -396,7 +426,7 @@ boolean refreshSDL()
 				case SDLK_ESCAPE:
 					
 					break;
-			}*/
+			*/
 		   break;
 				
 			case SDL_USEREVENT:

@@ -32,6 +32,8 @@
 #include "gui.h"
 #include "pcalc.h"
 #include "pfiles.h"
+//#include "emscripten.h"
+
 
 static void dn00(void)			{ kbd_key_pressed  (0, 0); }
 static void up00(boolean action)	{ kbd_key_released (0, 0); }
@@ -133,8 +135,8 @@ static void dnON(void)			{ kbd_on_pressed  (); }
 static void upON(boolean action)	{ kbd_on_released (); }
 
 static void dnZelda(void)			{  }
-//static void upZelda(boolean action)	{  load_file("zeldahp.dir"); }
-static void upZelda(boolean action)	{  load_file("Arkalite.lib"); }
+static void upZelda(boolean action)	{  load_file("zeldahp.dir"); }
+//static void upZelda(boolean action)	{  load_file("Arkalite.lib"); }
 
 
 
