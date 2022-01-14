@@ -153,16 +153,16 @@ const int enter_w = pow1*2 + 2;
 
 static KBMapping kb_sdl_mapping[] = {
 	
-	SDLK_0, dn03, up03,
-	SDLK_1, dn13, up13,
-	SDLK_2, dn12, up12,
-	SDLK_3, dn11, up11,
-	SDLK_4, dn23, up23,
-	SDLK_5, dn22, up22,
-	SDLK_6, dn21, up21,
-	SDLK_7, dn33, up33,
-	SDLK_8, dn32, up32,
-	SDLK_9, dn31, up31
+	SDL_SCANCODE_KP_0, dn03, up03,
+	SDL_SCANCODE_KP_1, dn13, up13,
+	SDL_SCANCODE_KP_2, dn12, up12,
+	SDL_SCANCODE_KP_3, dn11, up11,
+	SDL_SCANCODE_KP_4, dn23, up23,
+	SDL_SCANCODE_KP_5, dn22, up22,
+	SDL_SCANCODE_KP_6, dn21, up21,
+	SDL_SCANCODE_KP_7, dn33, up33,
+	SDL_SCANCODE_KP_8, dn32, up32,
+	SDL_SCANCODE_KP_9, dn31, up31
 };
 
 static Button calc_buttons[] = {
@@ -259,11 +259,12 @@ void pcalc_up(int mx, int my, int mb)
 
 void pcalc_kb_down(SDL_Keycode sdl_event)
 {
+	printf("%d\n", SDLK_0);
 	KBMapping * mapping = kb_sdl_mapping;
 	while(mapping->SDL_event_id)
 	{
 		if(sdl_event == mapping->SDL_event_id) {
-			mapping->down;
+			mapping->down();
 			break;
 		}
 		mapping ++;
@@ -276,7 +277,7 @@ void pcalc_kb_up(SDL_Keycode sdl_event)
 	while(mapping->SDL_event_id)
 	{
 		if(sdl_event == mapping->SDL_event_id) {
-			mapping->up;
+			mapping->up(TRUE);
 			break;
 		}
 		mapping ++;

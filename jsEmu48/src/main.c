@@ -346,10 +346,16 @@ boolean refreshSDL()
 			break;
 				
 			case SDL_KEYDOWN:
-				pcalc_kb_down(event.key.keysym.sym);
-				/*
-			switch (event.key.keysym.sym)
+				printf("%d %d %d\n", event.key.keysym.sym, event.key.keysym.scancode, SDL_SCANCODE_0);
+				//KEYS[event.key.keysym.sym] = 1;
+				
+				pcalc_kb_down(event.key.keysym.scancode);
+				
+			switch (event.key.keysym.scancode)
 			{
+				case SDL_SCANCODE_KP_0:
+					printf("0");
+					break;
 				case SDLK_LEFT:
 					
 					break;
@@ -365,11 +371,13 @@ boolean refreshSDL()
 				case SDLK_ESCAPE:
 					
 					break;
-			}*/
+			}
 		   break;
 				
 			case SDL_KEYUP:
-				pcalc_kb_up(event.key.keysym.sym);
+				//KEYS[event.key.keysym.sym] = 0;
+				pcalc_kb_up(event.key.keysym.scancode);
+				
 				/*
 			switch (event.key.keysym.sym)
 			{
