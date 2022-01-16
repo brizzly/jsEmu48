@@ -1,3 +1,4 @@
+![jsEmu48 Sources](logo.png)
 # jsEmu48
 SDL Emscripten compatible Fork version of HPEMU by Daniel Nilsson
 
@@ -14,7 +15,7 @@ Install git clone Emscripten
 
 ./emsdk install latest
 ./emsdk activate latest
-./emsdk_env.bat
+source ./emsdk_env.sh
 
 
 cd /src
