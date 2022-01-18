@@ -49,6 +49,7 @@
 #include <emscripten.h>
 #endif
 
+
 const int SCREEN_WIDTH = 524;
 const int SCREEN_HEIGHT = 750;
 
@@ -347,7 +348,6 @@ boolean refreshSDL()
 				
 			case SDL_KEYDOWN:
 				printf("%d %d\n", event.key.keysym.sym, event.key.keysym.scancode);
-				//KEYS[event.key.keysym.sym] = 1;
 				
 				pcalc_kb_down(event.key.keysym.scancode);
 				
@@ -357,6 +357,7 @@ boolean refreshSDL()
 					kbd_on_pressed();
 					break;
 				case SDL_SCANCODE_RETURN:
+				case SDL_SCANCODE_KP_ENTER:
 					kbd_key_pressed  (4, 4);
 					break;
 				case SDL_SCANCODE_BACKSPACE:
@@ -374,6 +375,96 @@ boolean refreshSDL()
 				case SDL_SCANCODE_DOWN:
 					kbd_key_pressed  (6, 1);
 					break;
+				case SDL_SCANCODE_KP_PLUS:
+					kbd_key_pressed  (0, 0);
+					break;
+				case SDL_SCANCODE_KP_MINUS:
+					kbd_key_pressed  (1, 0);
+					break;
+				case SDL_SCANCODE_KP_MULTIPLY:
+					kbd_key_pressed  (2, 0);
+					break;
+				case SDL_SCANCODE_KP_DIVIDE:
+					kbd_key_pressed  (3, 0);
+					break;
+				case SDL_SCANCODE_A:
+					kbd_key_pressed  (1, 4);
+					break;
+				case SDL_SCANCODE_B:
+					kbd_key_pressed  (8, 4);
+					break;
+				case SDL_SCANCODE_C:
+					kbd_key_pressed  (8, 3);
+					break;
+				case SDL_SCANCODE_D:
+					kbd_key_pressed  (8, 2);
+					break;
+				case SDL_SCANCODE_E:
+					kbd_key_pressed  (8, 1);
+					break;
+				case SDL_SCANCODE_F:
+					kbd_key_pressed  (8, 0);
+					break;
+				case SDL_SCANCODE_G:
+					kbd_key_pressed  (2, 4);
+					break;
+				case SDL_SCANCODE_H:
+					kbd_key_pressed  (7, 4);
+					break;
+				case SDL_SCANCODE_I:
+					kbd_key_pressed  (7, 3);
+					break;
+				case SDL_SCANCODE_J:
+					kbd_key_pressed  (7, 2);
+					break;
+				case SDL_SCANCODE_K:
+					kbd_key_pressed  (7, 1);
+					break;
+				case SDL_SCANCODE_L:
+					kbd_key_pressed  (7, 0);
+					break;
+				case SDL_SCANCODE_M:
+					kbd_key_pressed  (0, 4);
+					break;
+				case SDL_SCANCODE_N:
+					kbd_key_pressed  (6, 4);
+					break;
+				case SDL_SCANCODE_O:
+					kbd_key_pressed  (6, 3);
+					break;
+				case SDL_SCANCODE_P:
+					kbd_key_pressed  (6, 2);
+					break;
+				case SDL_SCANCODE_Q:
+					kbd_key_pressed  (6, 1);
+					break;
+				case SDL_SCANCODE_R:
+					kbd_key_pressed  (6, 0);
+					break;
+				case SDL_SCANCODE_S:
+					kbd_key_pressed  (3, 4);
+					break;
+				case SDL_SCANCODE_T:
+					kbd_key_pressed  (5, 4);
+					break;
+				case SDL_SCANCODE_U:
+					kbd_key_pressed  (5, 3);
+					break;
+				case SDL_SCANCODE_V:
+					kbd_key_pressed  (5, 2);
+					break;
+				case SDL_SCANCODE_W:
+					kbd_key_pressed  (5, 1);
+					break;
+				case SDL_SCANCODE_X:
+					kbd_key_pressed  (5, 0);
+					break;
+				case SDL_SCANCODE_Y:
+					kbd_key_pressed  (4, 3);
+					break;
+				case SDL_SCANCODE_Z:
+					kbd_key_pressed  (4, 2);
+					break;
 				default:
 					break;
 			}
@@ -388,6 +479,7 @@ boolean refreshSDL()
 						kbd_on_released();
 						break;
 					case SDL_SCANCODE_RETURN:
+					case SDL_SCANCODE_KP_ENTER:
 						kbd_key_released  (4, 4);
 						break;
 					case SDL_SCANCODE_BACKSPACE:
@@ -404,6 +496,96 @@ boolean refreshSDL()
 						break;
 					case SDL_SCANCODE_DOWN:
 						kbd_key_released  (6, 1);
+						break;
+					case SDL_SCANCODE_KP_PLUS:
+						kbd_key_released  (0, 0);
+						break;
+					case SDL_SCANCODE_KP_MINUS:
+						kbd_key_released  (1, 0);
+						break;
+					case SDL_SCANCODE_KP_MULTIPLY:
+						kbd_key_released  (2, 0);
+						break;
+					case SDL_SCANCODE_KP_DIVIDE:
+						kbd_key_released  (3, 0);
+						break;
+					case SDL_SCANCODE_A:
+						kbd_key_released  (1, 4);
+						break;
+					case SDL_SCANCODE_B:
+						kbd_key_released  (8, 4);
+						break;
+					case SDL_SCANCODE_C:
+						kbd_key_released  (8, 3);
+						break;
+					case SDL_SCANCODE_D:
+						kbd_key_released  (8, 2);
+						break;
+					case SDL_SCANCODE_E:
+						kbd_key_released  (8, 1);
+						break;
+					case SDL_SCANCODE_F:
+						kbd_key_released  (8, 0);
+						break;
+					case SDL_SCANCODE_G:
+						kbd_key_released  (2, 4);
+						break;
+					case SDL_SCANCODE_H:
+						kbd_key_released  (7, 4);
+						break;
+					case SDL_SCANCODE_I:
+						kbd_key_released  (7, 3);
+						break;
+					case SDL_SCANCODE_J:
+						kbd_key_released  (7, 2);
+						break;
+					case SDL_SCANCODE_K:
+						kbd_key_released  (7, 1);
+						break;
+					case SDL_SCANCODE_L:
+						kbd_key_released  (7, 0);
+						break;
+					case SDL_SCANCODE_M:
+						kbd_key_released  (0, 4);
+						break;
+					case SDL_SCANCODE_N:
+						kbd_key_released  (6, 4);
+						break;
+					case SDL_SCANCODE_O:
+						kbd_key_released  (6, 3);
+						break;
+					case SDL_SCANCODE_P:
+						kbd_key_released  (6, 2);
+						break;
+					case SDL_SCANCODE_Q:
+						kbd_key_released  (6, 1);
+						break;
+					case SDL_SCANCODE_R:
+						kbd_key_released  (6, 0);
+						break;
+					case SDL_SCANCODE_S:
+						kbd_key_released  (3, 4);
+						break;
+					case SDL_SCANCODE_T:
+						kbd_key_released  (5, 4);
+						break;
+					case SDL_SCANCODE_U:
+						kbd_key_released  (5, 3);
+						break;
+					case SDL_SCANCODE_V:
+						kbd_key_released  (5, 2);
+						break;
+					case SDL_SCANCODE_W:
+						kbd_key_released  (5, 1);
+						break;
+					case SDL_SCANCODE_X:
+						kbd_key_released  (5, 0);
+						break;
+					case SDL_SCANCODE_Y:
+						kbd_key_released  (4, 3);
+						break;
+					case SDL_SCANCODE_Z:
+						kbd_key_released  (4, 2);
 						break;
 					default:
 						break;

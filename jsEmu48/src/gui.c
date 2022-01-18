@@ -57,6 +57,9 @@ SDL_Texture * textB[49];
 SDL_Surface * surfC[49];
 SDL_Texture * textC[49];
 
+SDL_Surface * surfD[49];
+SDL_Texture * textD[49];
+
 
 
 #define PANEL_FLAG_VISIBLE	0x01
@@ -114,6 +117,17 @@ void drawText(int index, int x, int y, int btn_w, int btn_h)
 		destRect.x += 16;
 		SDL_RenderCopy(renderer, letterTexture3, NULL, &destRect);
 	}
+	
+	SDL_Surface * letterSurface4 = surfD[index];
+	SDL_Texture * letterTexture4 = textD[index];
+	if(letterSurface4 != NULL && letterTexture4 != NULL) {
+		int texW = letterSurface4->w;
+		int texH = letterSurface4->h;
+		SDL_Rect destRect = {x + (btn_w-texW)/2, y, texW, texH};
+		destRect.y += 12;
+		destRect.x += 22;
+		SDL_RenderCopy(renderer, letterTexture4, NULL, &destRect);
+	}
 }
 
 void gui_initKeyboard(Button * calcbuttons)
@@ -128,6 +142,7 @@ void gui_initKeyboard(Button * calcbuttons)
 	SDL_Color couleurBlanche = {255, 255, 255};
 	SDL_Color couleurGreen = {125, 215, 235};
 	SDL_Color couleurPurple = {191, 192, 236};
+	SDL_Color couleurYellow = {128, 108, 29};
 	
 #ifdef SDL_TTF
 	int i=0;
@@ -185,6 +200,25 @@ void gui_initKeyboard(Button * calcbuttons)
 		}
 		surfC[i] = s;
 		textC[i] = t;
+		i++;
+		buttons++;
+	}
+	
+	i=0;
+	buttons = calcbuttons;
+	while(buttons->textC)
+	{
+		SDL_Surface * s = NULL;
+		SDL_Texture * t = NULL;
+		if(buttons->textD && strcmp(buttons->textD, "") != 0)
+		{
+			s = TTF_RenderText_Blended (ArialFonte2, buttons->textD, couleurYellow);
+			if(s) {
+				t = SDL_CreateTextureFromSurface( renderer, s );
+			}
+		}
+		surfD[i] = s;
+		textD[i] = t;
 		i++;
 		buttons++;
 	}

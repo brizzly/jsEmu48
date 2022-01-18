@@ -51,6 +51,7 @@ typedef struct {
     char *text;
 	char *textB;
 	char *textC;
+	char *textD;
     void (*down)(void);
     void (*up)(boolean action);
 } Button;
