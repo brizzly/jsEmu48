@@ -29,8 +29,12 @@
 #define __DISPLAY_H
 
 //#include <allegro.h>
+#ifdef __EMSCRIPTEN__
 #include "SDL.h"
-#include <stdlib.h> 
+#else
+#include <SDL2/SDL.h>
+#endif
+#include <stdlib.h>
 #include "types.h"
 
 extern address menu_base;

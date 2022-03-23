@@ -26,8 +26,12 @@
  */
 
 //#include <allegro.h>
-#include "SDL.h"
-#include <stdlib.h> 
+#ifdef __EMSCRIPTEN__
+  #include "SDL.h"
+#else
+  #include <SDL2/SDL.h>
+#endif
+#include <stdlib.h>
 #include "types.h"
 #include "cpu.h"
 #include "bus.h"
