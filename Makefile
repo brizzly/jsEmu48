@@ -24,7 +24,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 BIN = hpemu
-ASSETS = jsEmu48/src/hpemu.rom jsEmu48/src/FreeSans.ttf
 OBJS = bus.o color.o cpu.o disasm.o display.o emulator.o gui.o hdw.o keyboard.o main.o opcodes.o pabout.o pcalc.o pdebug.o pfiles.o pmenu.o ports.o ram.o rom.o rpl.o timers.o
 
 CC = gcc
@@ -32,16 +31,23 @@ CFLAGS = -Wall -Werror -O3 -Wno-error=unused-function -Wno-error=unused-variable
 
 all: $(BIN) assets
 
-clean:
+clean-all: clean
 	-rm $(BIN)
-	-rm $(OBJS)
 	-rm hpemu.rom FreeSans.ttf
 
-assets: $(ASSETS)
-	cp $+ .
+clean:
+	-rm $(OBJS)
+
+assets: FreeSans.ttf hpemu.rom
 
 $(BIN): $(OBJS)
 	$(CC) -o $@ $+ -lSDL2 -lSDL2_ttf
+
+FreeSans.ttf: jsEmu48/src/FreeSans.ttf
+	cp $+ .
+
+hpemu.rom: jsEmu48/src/hpemu.rom
+	cp $+ .
 
 %.o: jsEmu48/src/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
