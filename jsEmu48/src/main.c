@@ -39,10 +39,18 @@
 #include "pcalc.h"
 #include "pfiles.h"
 
-#include "SDL.h"
-#include "SDL_image.h"
-#ifdef SDL_TTF
-#include "SDL_ttf.h"
+#ifdef __EMSCRIPTEN__
+  #include "SDL.h"
+  #include "SDL_image.h"
+  #ifdef SDL_TTF
+    #include "SDL_ttf.h"
+  #endif
+#else
+  #include <SDL2/SDL.h>
+  #include <SDL2/SDL_image.h>
+  #ifdef SDL_TTF
+    #include <SDL2/SDL_ttf.h>
+  #endif
 #endif
 
 #ifdef __EMSCRIPTEN__
@@ -643,9 +651,9 @@ void mainloop()
 	{
 
 		currentTime = SDL_GetTicks();
-		
-#ifdef EMSCRIPTEN
-		
+
+#ifdef __EMSCRIPTEN__
+
 		currentTime_emu = currentTime;
 		emuframecount = 0;
 		
@@ -717,7 +725,7 @@ void mainloop()
 	
 		if(refreshSDL() == FALSE)
 		{
-	#ifdef EMSCRIPTEN
+	#ifdef __EMSCRIPTEN__
 			printf("emscripten_cancel_main_loop\n");
 			emscripten_cancel_main_loop();
 	#endif
@@ -735,8 +743,8 @@ int main (int argc, char *argv[])
 	//gui_init();
 	
 	//start_timers();
-	
-#ifdef EMSCRIPTEN
+
+#ifdef __EMSCRIPTEN__
 	printf("emscripten_set_main_loop\n");
 	emscripten_set_main_loop(mainloop, 0, 1);
 	
@@ -749,7 +757,7 @@ int main (int argc, char *argv[])
 #endif
 	
 	/*
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	printf("emscripten_set_main_loop\n");
 	emscripten_set_main_loop(mainloop, 1000, 1);
 #else

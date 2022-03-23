@@ -28,7 +28,11 @@
 #ifndef __PCALC_H
 #define __PCALC_H
 
-#include "SDL.h"
+#ifdef __EMSCRIPTEN__
+  #include "SDL.h"
+#else
+  #include <SDL2/SDL.h>
+#endif
 #include "types.h"
 
 typedef struct {

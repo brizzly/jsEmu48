@@ -25,9 +25,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "SDL.h"
-#include "SDL_image.h"
-#include <stdlib.h> 
+#ifdef __EMSCRIPTEN__
+  #include "SDL.h"
+  #include "SDL_image.h"
+#else
+  #include <SDL2/SDL.h>
+  #include <SDL2/SDL_image.h>
+#endif
+#include <stdlib.h>
 #include "types.h"
 #include "bus.h"
 #include "pcalc.h"

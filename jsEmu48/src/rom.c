@@ -35,17 +35,23 @@
 
 
 #if defined(_WIN32)
-#include <windows.h> // memset()
-#include <shlwapi.h> // PathRemoveFileSpecA
+  #include <windows.h> // memset()
+  #include <shlwapi.h> // PathRemoveFileSpecA
 #endif
 
 #if defined(__APPLE__)
-#import <CoreFoundation/CoreFoundation.h>
-#include <string.h> // memset()
-#include <ctype.h>	// isalpha
-#include <unistd.h> // getcwd
+  #import <CoreFoundation/CoreFoundation.h>
+  #include <string.h> // memset()
+  #include <ctype.h>	// isalpha
+  #include <unistd.h> // getcwd
 #endif
 
+
+#ifdef __linux__
+  #include <libgen.h>         // dirname
+  #include <unistd.h>         // readlink
+  #include <linux/limits.h>   // PATH_MAX
+#endif
 
 static char	WorkingPath[512];
 
@@ -84,13 +90,21 @@ static void getExePath()
 		j++;
 	}
 #endif
-	
-	//setWorkingPath(programPath);
-	
-	memset(WorkingPath, 0, sizeof(WorkingPath));
-	strcpy(WorkingPath, programPath);
-	
-	printf("exec path = %s\n", WorkingPath);
+
+#ifdef __linux__
+    char result[PATH_MAX];
+    ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
+    const char* path;
+    if (count != -1) {
+      path = dirname(result);
+      strcpy(programPath, path);
+    }
+#endif
+
+    memset(WorkingPath, 0, sizeof(WorkingPath));
+    strcpy(WorkingPath, programPath);
+
+    printf("exec path = %s\n", WorkingPath);
 }
 
 
