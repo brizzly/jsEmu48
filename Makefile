@@ -35,7 +35,7 @@ all: $(BIN) assets
 clean:
 	-rm $(BIN)
 	-rm $(OBJS)
-	-rm $(ASSETS)
+	-rm hpemu.rom FreeSans.ttf
 
 assets: $(ASSETS)
 	cp $+ .
