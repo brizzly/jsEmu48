@@ -53,5 +53,4 @@ dkms.conf
 
 hpemu.bin
 
-jsEmu48/hp48.js
-jsEmu48/hp48.wasm
+/jsEmu48/hp48.*

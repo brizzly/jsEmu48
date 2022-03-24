@@ -67,10 +67,15 @@ timers.o: hpemu/src/types.h hpemu/src/cpu.h hpemu/src/timers.h
 
 
 js:
-	emcc -O3 hpemu/src/bus.c hpemu/src/color.c hpemu/src/cpu.c hpemu/src/disasm.c hpemu/src/display.c hpemu/src/emulator.c hpemu/src/gui.c hpemu/src/hdw.c hpemu/src/keyboard.c hpemu/src/main.c hpemu/src/opcodes.c hpemu/src/pabout.c hpemu/src/pcalc.c hpemu/src/pdebug.c hpemu/src/pfiles.c hpemu/src/pmenu.c hpemu/src/ports.c hpemu/src/ram.c hpemu/src/rom.c hpemu/src/rpl.c hpemu/src/timers.c -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["png"]' -s USE_SDL_TTF=2 --preload-file assets/hpemu.rom --preload-file assets/FreeSans.ttf --preload-file hpemu/src/48face5.png --preload-file assets/zeldahp.dir -o jsEmu48/hp48.js
+	emcc -O3 hpemu/src/*.c \
+	-s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["png"]' -s USE_SDL_TTF=2 \
+	--preload-file hpemu/src/48face5.png \
+	--preload-file assets \
+	-o jsEmu48/hp48.html \
+	-sWASM=0 --memory-init-file 1
 
 js-clean:
-	-rm jsEmu48/hp48.js jsEmu48/hp48.wasm
+	-rm jsEmu48/hp48.*
 
 js-serve:
 	ruby -run -e httpd ./jsEmu48/ -p 9999
