@@ -23,56 +23,54 @@
 # along with hpemu; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-BIN = hpemu
+BIN = hpemu.bin
 OBJS = bus.o color.o cpu.o disasm.o display.o emulator.o gui.o hdw.o keyboard.o main.o opcodes.o pabout.o pcalc.o pdebug.o pfiles.o pmenu.o ports.o ram.o rom.o rpl.o timers.o
 
 CC = gcc
 CFLAGS = -Wall -Werror -O3 -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wno-error=missing-braces -Wno-error=incompatible-pointer-types
 
-all: $(BIN) assets
+all: $(BIN)
 
 clean-all: clean
 	-rm $(BIN)
-	-rm hpemu.rom FreeSans.ttf zeldahp.dir
 
 clean:
 	-rm $(OBJS)
 
-assets: FreeSans.ttf hpemu.rom zeldahp.dir
-
 $(BIN): $(OBJS)
 	$(CC) -o $@ $+ -lSDL2 -lSDL2_ttf
 
-FreeSans.ttf: jsEmu48/src/FreeSans.ttf
-	cp $+ .
-
-hpemu.rom: jsEmu48/src/hpemu.rom
-	cp $+ .
-
-zeldahp.dir: jsEmu48/src/zeldahp.dir
-	cp $+ .
-
-%.o: jsEmu48/src/%.c
+%.o: hpemu/src/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-bus.o: jsEmu48/src/types.h jsEmu48/src/rom.h jsEmu48/src/ram.h jsEmu48/src/ports.h jsEmu48/src/hdw.h jsEmu48/src/bus.h
-color.o: jsEmu48/src/color.h
-cpu.o: jsEmu48/src/types.h jsEmu48/src/emulator.h jsEmu48/src/bus.h jsEmu48/src/opcodes.h jsEmu48/src/cpu.h
-cpu.o: jsEmu48/src/types.h jsEmu48/src/opcodes.h jsEmu48/src/disasm.h
-display.o: jsEmu48/src/types.h jsEmu48/src/bus.h
-emulator.o: jsEmu48/src/types.h jsEmu48/src/cpu.h jsEmu48/src/bus.h jsEmu48/src/timers.h jsEmu48/src/display.h jsEmu48/src/gui.h jsEmu48/src/pdebug.h jsEmu48/src/emulator.h
-gui.o: jsEmu48/src/color.h jsEmu48/src/pmenu.h jsEmu48/src/pcalc.h jsEmu48/src/pdebug.h jsEmu48/src/pfiles.h jsEmu48/src/pabout.h jsEmu48/src/gui.h
-hdw.o: jsEmu48/src/types.h jsEmu48/src/bus.h jsEmu48/src/ports.h jsEmu48/src/timers.h jsEmu48/src/display.h jsEmu48/src/hdw.h
-keyboard.o: jsEmu48/src/types.h jsEmu48/src/cpu.h jsEmu48/src/keyboard.h
-main.o: jsEmu48/src/types.h jsEmu48/src/emulator.h jsEmu48/src/gui.h jsEmu48/src/color.h
-opcodes.o: jsEmu48/src/types.h jsEmu48/src/cpu.h jsEmu48/src/bus.h jsEmu48/src/keyboard.h jsEmu48/src/opcodes.h jsEmu48/src/opinline.h
-pabout.o: jsEmu48/src/color.h jsEmu48/src/gui.h jsEmu48/src/pabout.h
-pcalc.o: jsEmu48/src/color.h jsEmu48/src/display.h jsEmu48/src/keyboard.h jsEmu48/src/gui.h jsEmu48/src/pcalc.h
-pdebug.o: jsEmu48/src/types.h jsEmu48/src/emulator.h jsEmu48/src/cpu.h jsEmu48/src/bus.h jsEmu48/src/disasm.h jsEmu48/src/color.h jsEmu48/src/gui.h jsEmu48/src/pdebug.h
-pfiles.o: jsEmu48/src/color.h jsEmu48/src/gui.h jsEmu48/src/rpl.h jsEmu48/src/pfiles.h
-pmenu.o: jsEmu48/src/emulator.h jsEmu48/src/color.h jsEmu48/src/gui.h jsEmu48/src/pmenu.h
-ports.o: jsEmu48/src/types.h jsEmu48/src/bus.h jsEmu48/src/ports.h
-ram.o: jsEmu48/src/types.h jsEmu48/src/bus.h jsEmu48/src/ram.h
-rom.o: jsEmu48/src/types.h jsEmu48/src/bus.h jsEmu48/src/rom.h
-rpl.o: jsEmu48/src/types.h jsEmu48/src/bus.h jsEmu48/src/opinline.h jsEmu48/src/rpl.h
-timers.o: jsEmu48/src/types.h jsEmu48/src/cpu.h jsEmu48/src/timers.h
+bus.o: hpemu/src/types.h hpemu/src/rom.h hpemu/src/ram.h hpemu/src/ports.h hpemu/src/hdw.h hpemu/src/bus.h
+color.o: hpemu/src/color.h
+cpu.o: hpemu/src/types.h hpemu/src/emulator.h hpemu/src/bus.h hpemu/src/opcodes.h hpemu/src/cpu.h
+cpu.o: hpemu/src/types.h hpemu/src/opcodes.h hpemu/src/disasm.h
+display.o: hpemu/src/types.h hpemu/src/bus.h
+emulator.o: hpemu/src/types.h hpemu/src/cpu.h hpemu/src/bus.h hpemu/src/timers.h hpemu/src/display.h hpemu/src/gui.h hpemu/src/pdebug.h hpemu/src/emulator.h
+gui.o: hpemu/src/color.h hpemu/src/pmenu.h hpemu/src/pcalc.h hpemu/src/pdebug.h hpemu/src/pfiles.h hpemu/src/pabout.h hpemu/src/gui.h
+hdw.o: hpemu/src/types.h hpemu/src/bus.h hpemu/src/ports.h hpemu/src/timers.h hpemu/src/display.h hpemu/src/hdw.h
+keyboard.o: hpemu/src/types.h hpemu/src/cpu.h hpemu/src/keyboard.h
+main.o: hpemu/src/types.h hpemu/src/emulator.h hpemu/src/gui.h hpemu/src/color.h
+opcodes.o: hpemu/src/types.h hpemu/src/cpu.h hpemu/src/bus.h hpemu/src/keyboard.h hpemu/src/opcodes.h hpemu/src/opinline.h
+pabout.o: hpemu/src/color.h hpemu/src/gui.h hpemu/src/pabout.h
+pcalc.o: hpemu/src/color.h hpemu/src/display.h hpemu/src/keyboard.h hpemu/src/gui.h hpemu/src/pcalc.h
+pdebug.o: hpemu/src/types.h hpemu/src/emulator.h hpemu/src/cpu.h hpemu/src/bus.h hpemu/src/disasm.h hpemu/src/color.h hpemu/src/gui.h hpemu/src/pdebug.h
+pfiles.o: hpemu/src/color.h hpemu/src/gui.h hpemu/src/rpl.h hpemu/src/pfiles.h
+pmenu.o: hpemu/src/emulator.h hpemu/src/color.h hpemu/src/gui.h hpemu/src/pmenu.h
+ports.o: hpemu/src/types.h hpemu/src/bus.h hpemu/src/ports.h
+ram.o: hpemu/src/types.h hpemu/src/bus.h hpemu/src/ram.h
+rom.o: hpemu/src/types.h hpemu/src/bus.h hpemu/src/rom.h
+rpl.o: hpemu/src/types.h hpemu/src/bus.h hpemu/src/opinline.h hpemu/src/rpl.h
+timers.o: hpemu/src/types.h hpemu/src/cpu.h hpemu/src/timers.h
+
+
+js:
+	emcc -O3 hpemu/src/bus.c hpemu/src/color.c hpemu/src/cpu.c hpemu/src/disasm.c hpemu/src/display.c hpemu/src/emulator.c hpemu/src/gui.c hpemu/src/hdw.c hpemu/src/keyboard.c hpemu/src/main.c hpemu/src/opcodes.c hpemu/src/pabout.c hpemu/src/pcalc.c hpemu/src/pdebug.c hpemu/src/pfiles.c hpemu/src/pmenu.c hpemu/src/ports.c hpemu/src/ram.c hpemu/src/rom.c hpemu/src/rpl.c hpemu/src/timers.c -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["png"]' -s USE_SDL_TTF=2 --preload-file assets/hpemu.rom --preload-file assets/FreeSans.ttf --preload-file hpemu/src/48face5.png --preload-file assets/zeldahp.dir -o jsEmu48/hp48.js
+
+js-clean:
+	-rm jsEmu48/hp48.js jsEmu48/hp48.wasm
+
+js-serve:
+	ruby -run -e httpd ./jsEmu48/ -p 9999

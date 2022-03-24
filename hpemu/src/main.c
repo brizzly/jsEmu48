@@ -245,8 +245,8 @@ static void program_init(void)
         exit(EXIT_FAILURE);
     }
 
-    ArialFonte = TTF_OpenFont("FreeSans.ttf", 14);
-    ArialFonte2 = TTF_OpenFont("FreeSans.ttf", 10);
+    ArialFonte = TTF_OpenFont("assets/FreeSans.ttf", 14);
+    ArialFonte2 = TTF_OpenFont("assets/FreeSans.ttf", 10);
 
 
     window = SDL_CreateWindow( "jsEmu48", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );

@@ -51,7 +51,7 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-/hpemu
-/hpemu.rom
-/FreeSans.ttf
-/zeldahp.dir
+hpemu.bin
+
+jsEmu48/hp48.js
+jsEmu48/hp48.wasm
