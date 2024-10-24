@@ -34,4 +34,4 @@ HP EMU 0.9
 https://sourceforge.net/projects/hpemu/files/hpemu/
 
 
-Visit my HP48 page : http://jadegame.com/games/hp48
+Visit my HP48 page : https://www.hpcalc.org/authors/8
