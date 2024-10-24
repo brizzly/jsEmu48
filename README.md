@@ -1,5 +1,5 @@
 ![jsEmu48 Sources](logo.png)
-# jsEmu48
+# jsEmu48: the first HP48 online emulator !
 SDL Emscripten compatible Fork version of HPEMU by Daniel Nilsson
 
 Demo: [http://jmapp.com/jsemu48/](https://jmapp.com/jsemu48/)
