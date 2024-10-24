@@ -2,7 +2,7 @@
 # jsEmu48
 SDL Emscripten compatible Fork version of HPEMU by Daniel Nilsson
 
-Demo: [http://jadegame.com/jsemu48/](https://jmapp.com/jsemu48/)
+Demo: [http://jmapp.com/jsemu48/](https://jmapp.com/jsemu48/)
 
 
 * Dependencies: SDL2 + TTF + IMAGE
