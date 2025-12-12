@@ -27,7 +27,30 @@ BIN = hpemu.bin
 OBJS = bus.o color.o cpu.o disasm.o display.o emulator.o gui.o hdw.o keyboard.o main.o opcodes.o pabout.o pcalc.o pdebug.o pfiles.o pmenu.o ports.o ram.o rom.o rpl.o timers.o
 
 CC = gcc
-CFLAGS = -Wall -Werror -O3 -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wno-error=missing-braces -Wno-error=incompatible-pointer-types
+UNAME_S := $(shell uname -s)
+
+# Platform-specific SDL2 configuration
+ifeq ($(UNAME_S),Darwin)
+    # macOS with Homebrew
+    SDL_PREFIX = $(shell brew --prefix sdl2)
+    SDL_TTF_PREFIX = $(shell brew --prefix sdl2_ttf)
+    SDL_IMAGE_PREFIX = $(shell brew --prefix sdl2_image)
+    SDL_CFLAGS = -I$(SDL_PREFIX)/include -I$(SDL_PREFIX)/include/SDL2 \
+                 -I$(SDL_TTF_PREFIX)/include -I$(SDL_TTF_PREFIX)/include/SDL2 \
+                 -I$(SDL_IMAGE_PREFIX)/include -I$(SDL_IMAGE_PREFIX)/include/SDL2 \
+                 -D_THREAD_SAFE
+    SDL_LIBS = -L$(SDL_PREFIX)/lib -L$(SDL_TTF_PREFIX)/lib -L$(SDL_IMAGE_PREFIX)/lib \
+               -lSDL2 -lSDL2_ttf -lSDL2_image -framework CoreFoundation
+else
+    # Linux - use pkg-config or sdl2-config
+    SDL_CFLAGS = $(shell sdl2-config --cflags)
+    SDL_LIBS = $(shell sdl2-config --libs) -lSDL2_ttf -lSDL2_image
+endif
+
+CFLAGS = -Wall -Werror -O3 -Wno-error=unused-function -Wno-error=unused-variable \
+         -Wno-error=unused-but-set-variable -Wno-error=missing-braces \
+         -Wno-error=incompatible-pointer-types -Wno-error=implicit-function-declaration \
+         $(SDL_CFLAGS)
 
 all: $(BIN)
 
@@ -38,7 +61,7 @@ clean:
 	-rm $(OBJS)
 
 $(BIN): $(OBJS)
-	$(CC) -o $@ $+ -lSDL2 -lSDL2_ttf
+	$(CC) -o $@ $+ $(SDL_LIBS)
 
 %.o: hpemu/src/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
