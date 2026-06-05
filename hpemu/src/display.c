@@ -50,8 +50,6 @@ boolean display_enable;
 
 byte lcdScreen[131*64];
 byte prev_lcdScreen[131*64];
-byte prev2_lcdScreen[131*64];
-//byte prev3_lcdScreen[131*64];
 byte lcdScreenGS[131*64];
 
 static address cur_adr;
@@ -61,8 +59,11 @@ static byte off_line;
 static int off_cnt;
 static boolean shouldClear = TRUE;
 static boolean shouldRender = FALSE;
-static int screen_draw_count = 0;
-static boolean drawGS = FALSE;
+
+/* Grayscale level = number of frames (out of the last 3) the pixel was lit.
+ * Indexed by the 3-bit history pattern (prev2<<2 | prev<<1 | cur), this is
+ * simply the popcount, giving the 4 levels 0..3. */
+static const byte gs_lut[8] = { 0, 1, 1, 2, 1, 2, 2, 3 };
 
 extern SDL_Renderer * renderer;
 extern SDL_Window * window;
@@ -154,85 +155,30 @@ static address draw_lcd_line(address adr, int y)
 
 	
 	
+	int idx = y * 131;	/* corresponds to x == 0 */
 	while (x < 131)
 	{
 		if (bit == 0) {
 			data = *ptr++;
 			bit = 4;
 		}
-		
 
-		byte pixel = ((data & 1) << 6); // (lcd_line0[x*2] >> 1) | ((data & 1) << 6);
-		if(pixel != '\0') {
-			pixel = '\3';
-			//printf("%c ", pixel);
-		}
-		
-		byte pixelGS = lcdScreenGS[x+y*131];
-		
-		
-		//prev3_lcdScreen[x+y*131] = prev2_lcdScreen[x+y*131];
-		prev2_lcdScreen[x+y*131] = prev_lcdScreen[x+y*131];
-		prev_lcdScreen[x+y*131] = lcdScreen[x+y*131];
-		lcdScreen[x+y*131] = pixel;
+		byte pixel = data & 1;	/* current frame: 0 or 1 */
 
-		byte prev_pixel = prev_lcdScreen[x+y*131];
-		byte prev2_pixel = prev2_lcdScreen[x+y*131];
-		//byte prev3_pixel = prev3_lcdScreen[x+y*131];
+		/* Roll the per-pixel history one frame forward (values are 0/1).
+		 * lcdScreen holds frame n-1, prev_lcdScreen holds frame n-2. */
+		byte prev_pixel  = lcdScreen[idx];	/* frame n-1 */
+		byte prev2_pixel = prev_lcdScreen[idx];	/* frame n-2 */
+		prev_lcdScreen[idx] = prev_pixel;
+		lcdScreen[idx]      = pixel;
 
-		
-		if(drawGS == TRUE)
-		{
-			if(prev2_pixel == '\0' && prev_pixel == '\0' && pixel == '\0')
-			{
-				pixelGS = '\0';
-			}
-			
-			if(prev2_pixel == '\3' && prev_pixel == '\3' && pixel == '\3')
-			{
-				pixelGS = '\3';
-			}
-			
-			if(prev2_pixel == '\0' && prev_pixel == '\3' && pixel == '\3')
-			{
-				pixelGS = '\2';
-			}
+		/* Recompute the 4-level grayscale every frame from the last 3 frames. */
+		lcdScreenGS[idx] = gs_lut[(prev2_pixel << 2) | (prev_pixel << 1) | pixel];
 
-			if(prev2_pixel == '\3' && prev_pixel == '\0' && pixel == '\0')
-			{
-				pixelGS = '\1';
-			}
-			
-			
-			if(prev2_pixel == '\3' && prev_pixel == '\3' && pixel == '\0')
-			{
-				pixelGS = '\2';
-			}
-			
-			if(prev2_pixel == '\3' && prev_pixel == '\0' && pixel == '\3')
-			{
-				pixelGS = '\2';
-			}
-			
-			if(prev2_pixel == '\0' && prev_pixel == '\0' && pixel == '\3')
-			{
-				pixelGS = '\1';
-			}
-
-			if(prev2_pixel == '\0' && prev_pixel == '\3' && pixel == '\0')
-			{
-				pixelGS = '\1';
-			}
-			
-			
-			lcdScreenGS[x+y*131] = pixelGS;
-		}
-		
-		//lcd_line0[x*2] = lcd_line0[x*2+1] = lcd_line1[x*2] = lcd_line1[x*2+1] = (lcd_line0[x*2] >> 1) | ((data & 1) << 6);
-		
 		data >>= 1;
 		bit--;
 		x++;
+		idx++;
     }
 	
     return (adr + 0x22 + (!in_menu && (display_offset&4)?2:0)) & 0xFFFFF;
@@ -265,79 +211,47 @@ void display_show()
 	if(shouldRender == TRUE)
 	{
 		shouldRender = FALSE;
-		
-		int pitch, w, h;
+
+		int pitch;
 		Uint32 * pixels;
-		int access;
-		Uint32 format;
-		
-		if ( SDL_QueryTexture(texTarget, &format, &access, &w, &h) != 0)
-		{
-			printf("error\n");
+
+		/* The 4 grayscale levels map to fixed colors. Resolve them to the
+		 * texture's pixel format once instead of per-pixel, every frame. */
+		static Uint32 gsColors[4];
+		static boolean gsColorsReady = FALSE;
+		if (!gsColorsReady) {
+			Uint32 format;
+			int access, w, h;
+			if (SDL_QueryTexture(texTarget, &format, &access, &w, &h) != 0) {
+				printf("SDL_QueryTexture: %s.\n", SDL_GetError());
+			}
+			SDL_PixelFormat * pixelFormat = SDL_AllocFormat(format);
+			gsColors[0] = SDL_MapRGB(pixelFormat, 119, 153, 136); // lightest
+			gsColors[1] = SDL_MapRGB(pixelFormat,  71, 134, 145);
+			gsColors[2] = SDL_MapRGB(pixelFormat,  13, 108, 111);
+			gsColors[3] = SDL_MapRGB(pixelFormat,  37,  61,  84); // darkest
+			SDL_FreeFormat(pixelFormat);
+			gsColorsReady = TRUE;
 		}
-		
+
 		if ( SDL_LockTexture(texTarget, NULL, (void**)&pixels, &pitch) != 0)
 		{
 			printf("SDL_LockTexture: %s.\n", SDL_GetError());
 		}
-		
-		
-		SDL_PixelFormat * pixelFormat = SDL_AllocFormat( format );
-		
-		
-		// do stuff
+
+		int stride = pitch / sizeof(Uint32);
+		const byte * src = lcdScreenGS;
 		for(int y=0 ; y<64 ; y++)
 		{
+			Uint32 * row = pixels + y * stride;
 			for(int x=0 ; x<131; x++)
 			{
-				int R = 0;
-				int G = 0;
-				int B = 0;
-				
-				//byte hp48pixel = lcdScreen[x+y*131];
-				byte hp48pixel = lcdScreenGS[x+y*131];
-			//	printf("%d ", hp48pixel);
-				
-				if(hp48pixel == '\0')
-				{
-					R = 119;
-					G = 153;
-					B = 136;
-				}
-				else if(hp48pixel == '\1')
-				{
-					R = 71; //200;
-					G = 134; //20;
-					B = 145; //20;
-				}
-				else if(hp48pixel == '\2')
-				{
-					R = 13;//20;
-					G = 108;//200;
-					B = 111;//20;
-				}
-				else if(hp48pixel == '\3')
-				{
-					R = 37;
-					G = 61;
-					B = 84;
-				}
-				
-				
-				// Now you want to format the color to a correct format that SDL can use.
-				// Basically we convert our RGB color to a hex-like BGR color.
-				
-				Uint32 color = SDL_MapRGB(pixelFormat, R, G, B);
-				
-				// Before setting the color, we need to know where we have to place it.
-				Uint32 pixelPosition = y * (pitch / sizeof(unsigned int)) + x;
-
-				pixels[pixelPosition] = color;
+				row[x] = gsColors[*src++];
 			}
 		}
-		
+
 		SDL_UnlockTexture(texTarget);
-			
+
 	}
 	
 	//Show rendered to texture
@@ -391,27 +305,9 @@ void display_update(void)
 			display_line_count = 0;
 			in_menu = 0;
 			cur_adr = display_base;
-			
+
 			shouldRender = TRUE;
-			
-			
-			screen_draw_count ++;
-			if(screen_draw_count == 3) {
-				
-				screen_draw_count = 0;
-			}
 		}
-		
-		
-		if(screen_draw_count == 0)
-		{
-			drawGS = TRUE;
-		}
-		else
-		{
-			drawGS = FALSE;
-		}
-		
     }
 	else if (off_cnt <= 7) {	/* Display is off and still fading */
 		
