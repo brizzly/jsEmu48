@@ -197,3 +197,10 @@ int rpl_push_object(byte *obj, address size)
     rpl_push(adr);
     return 0;
 }
+
+/* Data-stack top pointer. Reads 0 until the ROM has configured RAM during boot;
+ * the auto-loader polls this to know when it is safe to push a game object. */
+address rpl_read_dsktop(void)
+{
+    return read_address(DSKTOP);
+}

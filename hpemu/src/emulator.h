@@ -29,6 +29,7 @@
 #define __EMULATOR_H
 
 #include "types.h"
+void emulator_state_resync(void);
 
 enum EmulatorStates {
     EMULATOR_STOP,

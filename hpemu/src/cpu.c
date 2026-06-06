@@ -34,6 +34,10 @@
 
 Cpu cpu;
 
+/* Save-state: the whole CPU struct is plain values (no pointers). */
+void cpu_state_save(FILE *f) { fwrite(&cpu, sizeof(cpu), 1, f); }
+void cpu_state_load(FILE *f) { if (fread(&cpu, sizeof(cpu), 1, f) != 1) {} }
+
 #define MAX_OPC_LEN	21
 
 void cpu_interrupt(void)

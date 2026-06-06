@@ -29,6 +29,9 @@
 #define __PORTS_H
 
 #include "types.h"
+#include <stdio.h>
+void ports_state_save(FILE *f);
+void ports_state_load(FILE *f);
 
 void ports_init(void);
 void ports_exit(void);

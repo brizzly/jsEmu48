@@ -34,6 +34,19 @@ static byte current_bank;
 static byte *port2;
 static address port2mask;
 
+/* port2 is a pointer into the (re-allocated) card area; only the scalar bank
+ * selection needs persisting across a save-state. */
+void ports_state_save(FILE *f)
+{
+    fwrite(&current_bank, sizeof(current_bank), 1, f);
+    fwrite(&port2mask, sizeof(port2mask), 1, f);
+}
+void ports_state_load(FILE *f)
+{
+    if (fread(&current_bank, sizeof(current_bank), 1, f) != 1) return;
+    if (fread(&port2mask, sizeof(port2mask), 1, f) != 1) return;
+}
+
 void ports_init(void)
 {
     // ce1 = bank switcher

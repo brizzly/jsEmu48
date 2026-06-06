@@ -34,6 +34,9 @@
 
 static byte hdw_ram[64];
 
+void hdw_state_save(FILE *f) { fwrite(hdw_ram, 1, sizeof(hdw_ram), f); }
+void hdw_state_load(FILE *f) { if (fread(hdw_ram, 1, sizeof(hdw_ram), f) != sizeof(hdw_ram)) {} }
+
 void hdw_init(void)
 {
 }

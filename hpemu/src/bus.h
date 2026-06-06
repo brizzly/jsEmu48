@@ -29,6 +29,9 @@
 #define __BUS_H
 
 #include "types.h"
+#include <stdio.h>
+void bus_state_save(FILE *f);
+void bus_state_load(FILE *f);
 
 
 #define SEG_OF(adr)	((adr)>>12)

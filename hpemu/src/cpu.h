@@ -29,6 +29,9 @@
 #define __CPU_H
 
 #include "types.h"
+#include <stdio.h>
+void cpu_state_save(FILE *f);
+void cpu_state_load(FILE *f);
 
 typedef struct {
     byte reg[4][16];

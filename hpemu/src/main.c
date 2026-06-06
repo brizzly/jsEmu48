@@ -27,6 +27,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "types.h"
 #include "emulator.h"
 #include "gui.h"
@@ -38,6 +39,9 @@
 #include "keyboard.h"
 #include "pcalc.h"
 #include "pfiles.h"
+#include "rpl.h"
+#include "cpu.h"
+#include "state.h"
 
 #ifdef __EMSCRIPTEN__
   #include "SDL.h"
@@ -75,6 +79,18 @@ SDL_TimerID my_timer4_id;
 
 boolean SDL_ready = FALSE;
 
+/* Optional game object to push onto the calc once it has booted. Set from the
+ * command line / Module.arguments as a RELATIVE path (e.g. "game.dir"); empty
+ * means none. Driven by a small state machine in mainloop(). The pre-cleared
+ * RAM image (assets/hpemu.ram) makes the calc warm-boot to the empty stack, so
+ * we wait until the calc is idle at the stack before pushing. */
+static char autoload_path[1024] = "";
+static int autoload_phase = 0;			/* 0=wait ready, 1=load+ON, 2=release ON */
+static unsigned int autoload_on_release = 0;	/* when to release ON */
+/* Emulated cycles (~4MHz) to let the boot ROM finish before pushing. This is
+ * host-independent: the web build throttles wall-clock but counts the same
+ * cycles, so the calc is equally booted at this point on every machine. */
+#define AUTOLOAD_MIN_CYCLES 12000000
 
 
 unsigned int framecount = 0;
@@ -226,6 +242,11 @@ static void parse_args(int argc, char *argv[])
         fullscreen = FALSE;
         break;
         }
+    }
+    else {
+        /* First non-option argument is a game object to auto-load. */
+        strncpy(autoload_path, argv[0], sizeof(autoload_path) - 1);
+        autoload_path[sizeof(autoload_path) - 1] = '\0';
     }
     }
 }
@@ -641,6 +662,32 @@ void mainloop()
     if(SDL_ready == TRUE)
     {
 
+        /* Auto-load the requested game. Thanks to the pre-cleared RAM image the
+         * calc boots straight to the empty stack (no recover prompt). We wait
+         * until the boot ROM has run (cpu.cycles) and the calc is idle waiting
+         * for a key (cpu.shutdown + cpu.keyscan, with RAM configured) so the
+         * RPL system is fully ready, then push the object and tap ON to wake
+         * the calc and redraw the stack. */
+        if (autoload_path[0] != '\0') {
+            unsigned int now = SDL_GetTicks();
+
+            if (autoload_phase == 0) {		/* wait until booted and idle */
+                if (cpu.cycles > AUTOLOAD_MIN_CYCLES &&
+                    cpu.shutdown && cpu.keyscan && rpl_read_dsktop() != 0) {
+                    load_file(autoload_path);
+                    kbd_on_pressed();
+                    autoload_on_release = now + 150;
+                    autoload_phase = 1;
+                }
+            }
+            else if (autoload_phase == 1) {	/* release ON, done */
+                if (now >= autoload_on_release) {
+                    kbd_on_released();
+                    autoload_path[0] = '\0';
+                }
+            }
+        }
+
         currentTime = SDL_GetTicks();
 
 #ifdef __EMSCRIPTEN__
@@ -732,6 +779,18 @@ int main (int argc, char *argv[])
     program_init();
     emulator_init();
     //gui_init();
+
+    /* If a save-state was staged (a "game already launched" snapshot), restore
+     * it so the calc resumes straight into the running game. */
+    {
+        FILE *sf = fopen("load.state", "rb");
+        if (sf) {
+            fclose(sf);
+            if (state_load("load.state") == 0) {
+                autoload_path[0] = '\0';	/* snapshot wins over object push */
+            }
+        }
+    }
 
     //start_timers();
 

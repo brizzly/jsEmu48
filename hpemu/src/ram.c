@@ -26,6 +26,7 @@
  */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include "types.h"
 #include "bus.h"
@@ -41,7 +42,23 @@ void ram_init(void)
     if (!buf) {
 	exit(0x20);
     }
-    memset(buf, 0, ram_size);
+
+    /* Boot from a pre-cleared RAM image so the calc warm-starts straight to the
+     * empty stack instead of showing "Try To Recover Memory?" on cold boot.
+     * rom_init() runs first (in bus_init) and has already chdir'd to the data
+     * directory, so a relative path resolves on both desktop and the web build.
+     * Fall back to zeroed RAM if the image is missing. */
+    FILE *f = fopen("assets/hpemu.ram", "rb");
+    if (f) {
+	size_t n = fread(buf, 1, ram_size, f);
+	fclose(f);
+	if (n != ram_size) {
+	    memset(buf, 0, ram_size);
+	}
+    } else {
+	memset(buf, 0, ram_size);
+    }
+
     bus_info.ram_data = buf;
     bus_info.ram_mask = ram_size-1;
 }

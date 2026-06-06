@@ -44,6 +44,22 @@ byte timer2_control;
 byte timer1_value;
 dword timer2_value;
 
+void timers_state_save(FILE *f)
+{
+    fwrite(&timer1_control, sizeof(timer1_control), 1, f);
+    fwrite(&timer2_control, sizeof(timer2_control), 1, f);
+    fwrite(&timer1_value, sizeof(timer1_value), 1, f);
+    fwrite(&timer2_value, sizeof(timer2_value), 1, f);
+}
+
+void timers_state_load(FILE *f)
+{
+    if (fread(&timer1_control, sizeof(timer1_control), 1, f) != 1) return;
+    if (fread(&timer2_control, sizeof(timer2_control), 1, f) != 1) return;
+    if (fread(&timer1_value, sizeof(timer1_value), 1, f) != 1) return;
+    if (fread(&timer2_value, sizeof(timer2_value), 1, f) != 1) return;
+}
+
 void timer1_update(void)
 {
     if (timer2_control & TIMER_RUN)

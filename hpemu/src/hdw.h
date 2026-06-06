@@ -29,6 +29,9 @@
 #define __HDW_H
 
 #include "types.h"
+#include <stdio.h>
+void hdw_state_save(FILE *f);
+void hdw_state_load(FILE *f);
 
 void hdw_init(void);
 void hdw_exit(void);

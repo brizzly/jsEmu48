@@ -60,6 +60,35 @@ static int off_cnt;
 static boolean shouldClear = TRUE;
 static boolean shouldRender = FALSE;
 
+/* Save-state: persist where/how the LCD reads video RAM. The pixel buffers are
+ * purely visual and regenerate within a couple of frames, so they are skipped. */
+void display_state_save(FILE *f)
+{
+    fwrite(&menu_base, sizeof(menu_base), 1, f);
+    fwrite(&display_base, sizeof(display_base), 1, f);
+    fwrite(&display_line_offset, sizeof(display_line_offset), 1, f);
+    fwrite(&display_line_count, sizeof(display_line_count), 1, f);
+    fwrite(&display_height, sizeof(display_height), 1, f);
+    fwrite(&display_offset, sizeof(display_offset), 1, f);
+    fwrite(&display_enable, sizeof(display_enable), 1, f);
+    fwrite(&cur_adr, sizeof(cur_adr), 1, f);
+    fwrite(&in_menu, sizeof(in_menu), 1, f);
+    fwrite(&off_cnt, sizeof(off_cnt), 1, f);
+}
+void display_state_load(FILE *f)
+{
+    if (fread(&menu_base, sizeof(menu_base), 1, f) != 1) return;
+    if (fread(&display_base, sizeof(display_base), 1, f) != 1) return;
+    if (fread(&display_line_offset, sizeof(display_line_offset), 1, f) != 1) return;
+    if (fread(&display_line_count, sizeof(display_line_count), 1, f) != 1) return;
+    if (fread(&display_height, sizeof(display_height), 1, f) != 1) return;
+    if (fread(&display_offset, sizeof(display_offset), 1, f) != 1) return;
+    if (fread(&display_enable, sizeof(display_enable), 1, f) != 1) return;
+    if (fread(&cur_adr, sizeof(cur_adr), 1, f) != 1) return;
+    if (fread(&in_menu, sizeof(in_menu), 1, f) != 1) return;
+    if (fread(&off_cnt, sizeof(off_cnt), 1, f) != 1) return;
+}
+
 /* Grayscale level = number of frames (out of the last 3) the pixel was lit.
  * Indexed by the 3-bit history pattern (prev2<<2 | prev<<1 | cur), this is
  * simply the popcount, giving the 4 levels 0..3. */

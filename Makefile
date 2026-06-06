@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 BIN = hpemu.bin
-OBJS = bus.o color.o cpu.o disasm.o display.o emulator.o gui.o hdw.o keyboard.o main.o opcodes.o pabout.o pcalc.o pdebug.o pfiles.o pmenu.o ports.o ram.o rom.o rpl.o timers.o
+OBJS = bus.o color.o cpu.o disasm.o display.o emulator.o gui.o hdw.o keyboard.o main.o opcodes.o pabout.o pcalc.o pdebug.o pfiles.o pmenu.o ports.o ram.o rom.o rpl.o state.o timers.o
 
 CC = gcc
 UNAME_S := $(shell uname -s)
@@ -92,7 +92,12 @@ timers.o: hpemu/src/types.h hpemu/src/cpu.h hpemu/src/timers.h
 
 js:
 	emcc -O3 hpemu/src/*.c \
+	-Wno-error=incompatible-pointer-types -Wno-error=incompatible-function-pointer-types \
+	-Wno-error=implicit-function-declaration -Wno-error=int-conversion \
 	-s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["png"]' -s USE_SDL_TTF=2 \
+	-s EXPORTED_RUNTIME_METHODS='["FS","callMain","ccall"]' -s FORCE_FILESYSTEM=1 \
+	-s EXPORTED_FUNCTIONS='["_main","_hp_save_state"]' \
+	-s ALLOW_MEMORY_GROWTH=1 \
 	--preload-file hpemu/src/48face5.png \
 	--preload-file assets \
 	-o jsEmu48/hp48.html \

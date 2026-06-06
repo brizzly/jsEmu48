@@ -60,6 +60,37 @@ void bus_init(void)
     bus_reset();
 }
 
+void bus_remap(void);	/* defined below */
+
+#define RAM_BYTES (256*1024)
+
+/* Save-state: RAM contents + the bus configuration. The data pointers
+ * (rom/ram/ce*) are session-specific allocations, so on load we keep the
+ * current ones and rebuild the memory map from the restored config. */
+void bus_state_save(FILE *f)
+{
+    fwrite(bus_info.ram_data, 1, RAM_BYTES, f);
+    fwrite(&bus_info, sizeof(BusInfo), 1, f);
+    fwrite(&hdw_seg, sizeof(hdw_seg), 1, f);
+    fwrite(&crc, sizeof(crc), 1, f);
+}
+
+void bus_state_load(FILE *f)
+{
+    byte *rom = bus_info.rom_data, *ram = bus_info.ram_data;
+    byte *c1 = bus_info.ce1_data, *c2 = bus_info.ce2_data, *c3 = bus_info.nce3_data;
+    BusInfo tmp;
+
+    if (fread(ram, 1, RAM_BYTES, f) != RAM_BYTES) return;
+    if (fread(&tmp, sizeof(BusInfo), 1, f) != 1) return;
+    tmp.rom_data = rom; tmp.ram_data = ram;
+    tmp.ce1_data = c1; tmp.ce2_data = c2; tmp.nce3_data = c3;
+    bus_info = tmp;
+    if (fread(&hdw_seg, sizeof(hdw_seg), 1, f) != 1) return;
+    if (fread(&crc, sizeof(crc), 1, f) != 1) return;
+    bus_remap();
+}
+
 void bus_exit(void)
 {
     rom_exit();

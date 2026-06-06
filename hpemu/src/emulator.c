@@ -168,6 +168,16 @@ void emulator_exit(void)
     bus_exit();
 }
 
+/* After restoring a save-state, cpu.cycles jumps; reschedule the periodic
+ * cycle events relative to the new cycle count so they keep firing normally. */
+void emulator_state_resync(void)
+{
+    CycleEvent *cep;
+    for (cep = cycle_events; cep->proc; cep++) {
+	cep->next = cpu.cycles + emulator_speed / cep->freq;
+    }
+}
+
 
 boolean emulator_run(void)
 {

@@ -35,7 +35,10 @@
 #include <SDL2/SDL.h>
 #endif
 #include <stdlib.h>
+#include <stdio.h>
 #include "types.h"
+void display_state_save(FILE *f);
+void display_state_load(FILE *f);
 
 extern address menu_base;
 extern address display_base;

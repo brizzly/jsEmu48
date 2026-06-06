@@ -29,6 +29,9 @@
 #define __TIMERS_H
 
 #include "types.h"
+#include <stdio.h>
+void timers_state_save(FILE *f);
+void timers_state_load(FILE *f);
 
 extern byte timer1_control;
 extern byte timer2_control;
