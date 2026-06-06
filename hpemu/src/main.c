@@ -92,6 +92,15 @@ static unsigned int autoload_on_release = 0;	/* when to release ON */
  * cycles, so the calc is equally booted at this point on every machine. */
 #define AUTOLOAD_MIN_CYCLES 12000000
 
+#ifdef __EMSCRIPTEN__
+/* Key injection for on-screen touch controls (mobile). row/col are the HP48
+ * keyboard-matrix coordinates (same as pcalc.c); ON is a separate line. */
+EMSCRIPTEN_KEEPALIVE void hp_key_down(int row, int col) { kbd_key_pressed(row, col); }
+EMSCRIPTEN_KEEPALIVE void hp_key_up(int row, int col)   { kbd_key_released(row, col); }
+EMSCRIPTEN_KEEPALIVE void hp_on_down(void)              { kbd_on_pressed(); }
+EMSCRIPTEN_KEEPALIVE void hp_on_up(void)                { kbd_on_released(); }
+#endif
+
 
 unsigned int framecount = 0;
 unsigned int emuframecount = 0;

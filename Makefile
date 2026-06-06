@@ -96,7 +96,7 @@ js:
 	-Wno-error=implicit-function-declaration -Wno-error=int-conversion \
 	-s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["png"]' -s USE_SDL_TTF=2 \
 	-s EXPORTED_RUNTIME_METHODS='["FS","callMain","ccall"]' -s FORCE_FILESYSTEM=1 \
-	-s EXPORTED_FUNCTIONS='["_main","_hp_save_state"]' \
+	-s EXPORTED_FUNCTIONS='["_main","_hp_save_state","_hp_key_down","_hp_key_up","_hp_on_down","_hp_on_up"]' \
 	-s ALLOW_MEMORY_GROWTH=1 \
 	--preload-file hpemu/src/48face5.png \
 	--preload-file assets \
