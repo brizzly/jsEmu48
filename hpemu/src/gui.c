@@ -322,12 +322,13 @@ void button_draw(Button *b)
     c = color[(b->flags&BUTTON_PUSHED) ? C_BUTTON_PUSHED : C_BUTTON_BACK];
 
     if(b->flags&BUTTON_PUSHED) {
-        SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+        // Pressed key: bright green highlight (matches the site accent).
+        SDL_SetRenderDrawColor(renderer, 0x3a, 0xcc, 0x80, 0xFF);
         SDL_RenderDrawRect(renderer, &rectToDraw);
     }
     else {
-        // debug only
-        SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        // Idle key: soft muted-gray grid instead of a harsh white border.
+        SDL_SetRenderDrawColor(renderer, 0x5a, 0x6b, 0x63, 0xFF);
         SDL_RenderDrawRect(renderer, &rectToDraw);
     }
 

@@ -227,7 +227,6 @@ static Button calc_buttons[] = {
     { 47, 	pox+xstart+(xspacing2*3),  ystart+(8*yspacing)+poy+80,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "SPC", "pi", "rad", "",	dn01,	up01 },
     { 48,	pox+xstart+(xspacing2*4),  ystart+(8*yspacing)+poy+80,    pow2,	poh2, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "+", "{}", ": :", "",	dn00,	up00 },
 	
-	{ 49,	pox+xstart,    ystart+(9*yspacing)+poy+90,	130, 20, BUTTON_B1RELEASE | BUTTON_B2TOGGLE, "Game", "", "", "",	dnZelda,	upZelda },
     { 50,	pox+xstart,    poy,	    0,	0,  0,					NULL,	NULL, NULL, NULL,	NULL }
 };
 
