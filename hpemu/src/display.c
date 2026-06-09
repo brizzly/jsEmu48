@@ -291,7 +291,7 @@ void display_show()
 	/* Pixel-matrix look: thin separators between the 131x64 LCD pixels (each
 	 * cell is 4px after the 4x scale) for a crisp, "sublime" pixel rendering. */
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	SDL_SetRenderDrawColor(renderer, 30, 45, 62, 90);
+	SDL_SetRenderDrawColor(renderer, 40, 56, 74, 38);
 	for (int gx = 0; gx <= 131; gx++)
 		SDL_RenderDrawLine(renderer, LCD_X + gx*4, LCD_Y, LCD_X + gx*4, LCD_Y + 256);
 	for (int gy = 0; gy <= 64; gy++)
