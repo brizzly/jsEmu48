@@ -27,6 +27,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 #include "color.h"
 #include "pmenu.h"
 #include "pcalc.h"
@@ -308,12 +309,45 @@ void gui_hide_panel(int i)
 }
 
 
+/* Rounded-rectangle helpers (SDL2 has no native rounded rect). Corners are cut
+ * out of the fill and the outline traces quarter-circle arcs, for soft keys. */
+static void fillRoundedRect(SDL_Rect r, int rad)
+{
+    int x = r.x, y = r.y, w = r.w, h = r.h;
+    if (rad*2 > w) rad = w/2;
+    if (rad*2 > h) rad = h/2;
+    SDL_Rect mid = { x,       y+rad, w,        h-2*rad }; SDL_RenderFillRect(renderer, &mid);
+    SDL_Rect top = { x+rad,   y,     w-2*rad,  rad     }; SDL_RenderFillRect(renderer, &top);
+    SDL_Rect bot = { x+rad,   y+h-rad, w-2*rad, rad    }; SDL_RenderFillRect(renderer, &bot);
+}
+
+static void drawRoundedRect(SDL_Rect r, int rad)
+{
+    int x = r.x, y = r.y, w = r.w, h = r.h;
+    if (rad*2 > w) rad = w/2;
+    if (rad*2 > h) rad = h/2;
+    SDL_RenderDrawLine(renderer, x+rad, y,     x+w-1-rad, y);       /* top    */
+    SDL_RenderDrawLine(renderer, x+rad, y+h-1, x+w-1-rad, y+h-1);   /* bottom */
+    SDL_RenderDrawLine(renderer, x,     y+rad, x,         y+h-1-rad);/* left   */
+    SDL_RenderDrawLine(renderer, x+w-1, y+rad, x+w-1,     y+h-1-rad);/* right  */
+    for (int i = 0; i <= 90; i += 6) {
+        double a = i * M_PI / 180.0;
+        int dx = (int)lround(rad * cos(a));
+        int dy = (int)lround(rad * sin(a));
+        SDL_RenderDrawPoint(renderer, x+rad-dx,     y+rad-dy);      /* TL */
+        SDL_RenderDrawPoint(renderer, x+w-1-rad+dx, y+rad-dy);      /* TR */
+        SDL_RenderDrawPoint(renderer, x+rad-dx,     y+h-1-rad+dy);  /* BL */
+        SDL_RenderDrawPoint(renderer, x+w-1-rad+dx, y+h-1-rad+dy);  /* BR */
+    }
+}
+
 void button_draw(Button *b)
 {
     SDL_Rect rectToDraw = {b->x*2, b->y*2, b->w*2, b->h*2};
+    const int radius = 7;
 
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x33);
-    SDL_RenderFillRect(renderer, &rectToDraw);
+    fillRoundedRect(rectToDraw, radius);
 
     drawText(b->index, b->x*2, 10 + b->y*2, b->w*2, b->h*2);
 
@@ -324,12 +358,12 @@ void button_draw(Button *b)
     if(b->flags&BUTTON_PUSHED) {
         // Pressed key: bright green highlight (matches the site accent).
         SDL_SetRenderDrawColor(renderer, 0x3a, 0xcc, 0x80, 0xFF);
-        SDL_RenderDrawRect(renderer, &rectToDraw);
+        drawRoundedRect(rectToDraw, radius);
     }
     else {
-        // Idle key: soft muted-gray grid instead of a harsh white border.
+        // Idle key: soft muted-gray rounded outline instead of a harsh white box.
         SDL_SetRenderDrawColor(renderer, 0x5a, 0x6b, 0x63, 0xFF);
-        SDL_RenderDrawRect(renderer, &rectToDraw);
+        drawRoundedRect(rectToDraw, radius);
     }
 
 
