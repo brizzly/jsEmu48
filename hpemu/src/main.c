@@ -376,7 +376,7 @@ boolean refreshSDL()
             break;
 
             case SDL_KEYDOWN:
-                printf("%d %d\n", event.key.keysym.sym, event.key.keysym.scancode);
+                if (event.key.repeat) break;   // ignore OS key auto-repeat: one press per physical keydown
 
                 pcalc_kb_down(event.key.keysym.scancode);
 

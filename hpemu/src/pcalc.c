@@ -260,7 +260,6 @@ void pcalc_up(int mx, int my, int mb)
 
 void pcalc_kb_down(SDL_Keycode sdl_event)
 {
-	printf("%d\n", SDLK_0);
 	KBMapping * mapping = kb_sdl_mapping;
 	while(mapping->SDL_event_id)
 	{
