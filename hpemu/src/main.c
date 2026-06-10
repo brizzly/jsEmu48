@@ -701,18 +701,24 @@ void mainloop()
 
 #ifdef __EMSCRIPTEN__
 
-        currentTime_emu = currentTime;
-        emuframecount = 0;
+        /* Pace emulation by emulated Saturn cycles against real wall-clock time,
+         * so games run at true HP48 speed on any machine. The old loop ran a
+         * fixed ~2ms of host work per frame, so speed scaled with the host CPU
+         * and games ran far too fast on a fast computer. */
+        {
+            static unsigned int lastEmuTime = 0;
+            if (lastEmuTime == 0) lastEmuTime = currentTime;
+            unsigned int dt = currentTime - lastEmuTime;   /* ms since last frame   */
+            if (dt > 50) dt = 50;                          /* cap: no runaway after a tab/stall */
+            lastEmuTime = currentTime;
 
-        do {
-            emuframecount ++;
-            emulator_run();
-
-            currentTime_emu = SDL_GetTicks() - currentTime;
+            dword toRun  = (dword)((unsigned long long)emulator_speed * dt / 1000u);
+            dword target = cpu.cycles + toRun;
+            unsigned int guard = 0;
+            while (((int)(target - cpu.cycles)) > 0 && guard++ < 4000000u) {
+                emulator_run();
+            }
         }
-        while (currentTime_emu < 2);
-
-        //printf("EMU emuframecount = %d | time = %d\n", emuframecount, currentTime_emu);
 
 #else
 
